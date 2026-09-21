@@ -2,6 +2,7 @@ import com.android.build.api.variant.FilterConfiguration.FilterType.ABI
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.gradle.tasks.MergeSourceSetFolders
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.security.KeyStore
 
 plugins {
     alias(libs.plugins.android.application)
@@ -50,7 +51,7 @@ fun optionalKey(envKey: String, fileName: String): String? {
 
 /** Verilen anahtar deposu bu parolayla açılabiliyor mu? (Yanlış bir secret derlemeyi bozmasın.) */
 fun keystoreOpens(keystore: File, password: String): Boolean = try {
-    val store = java.security.KeyStore.getInstance(java.security.KeyStore.getDefaultType())
+    val store = KeyStore.getInstance(KeyStore.getDefaultType())
     keystore.inputStream().use { store.load(it, password.toCharArray()) }
     true
 } catch (e: Exception) {
