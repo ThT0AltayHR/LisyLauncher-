@@ -298,7 +298,8 @@ private fun FakeJoystick(
 @Composable
 private fun AreaButton(
     modifier: Modifier = Modifier,
-    iconRes: Int,
+    text: String? = null,
+    iconRes: Int? = null,
     isSelected: Boolean,
     position: CardPosition,
     onClick: () -> Unit
@@ -333,11 +334,14 @@ private fun AreaButton(
             },
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                modifier = Modifier.size(20.dp),
-                painter = painterResource(iconRes),
-                contentDescription = null
-            )
+            when {
+                text != null -> Text(text)
+                iconRes != null -> Icon(
+                    modifier = Modifier.size(20.dp),
+                    painter = painterResource(iconRes),
+                    contentDescription = null
+                )
+            }
         }
     }
 }

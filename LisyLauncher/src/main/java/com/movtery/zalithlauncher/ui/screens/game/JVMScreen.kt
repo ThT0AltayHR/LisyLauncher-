@@ -274,15 +274,19 @@ private fun ButtonsLayout(
 private fun TextButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    iconRes: Int
+    text: String? = null,
+    iconRes: Int? = null
 ) {
     Button(
         modifier = modifier,
         onClick = onClick
     ) {
-        Icon(
-            painter = painterResource(iconRes),
-            contentDescription = null
-        )
+        when {
+            text != null -> Text(text)
+            iconRes != null -> Icon(
+                painter = painterResource(iconRes),
+                contentDescription = null
+            )
+        }
     }
 }
