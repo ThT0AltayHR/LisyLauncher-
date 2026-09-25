@@ -132,7 +132,7 @@ fun SkinWardrobeScreen() {
                 ) {
                     if (selectedSkin != null) {
                         AndroidView(
-                            factory = { ctx -> playerSkin.createView(ctx) },
+                            factory = { ctx -> playerSkin.loadWebView(ctx) },
                             modifier = Modifier.fillMaxSize()
                         )
                     } else {
@@ -161,8 +161,8 @@ fun SkinWardrobeScreen() {
                                     skin.file.copyTo(dest, overwrite = true)
                                     // slim/classic model detect
                                     val slim = skin.file.isSlimModel()
-                                    val model = if (slim) SkinModelType.SLIM else SkinModelType.DEFAULT
-                                    AccountsManager.updateAccount(account.copy(skinModelType = model))
+                                    val model = if (slim) SkinModelType.ALEX else SkinModelType.STEVE
+                                    AccountsManager.saveAccount(account.copy(skinModelType = model))
                                 }
                                 snackbarHost.showSnackbar("Skin uygulandı ✓")
                             } catch (e: Exception) {
