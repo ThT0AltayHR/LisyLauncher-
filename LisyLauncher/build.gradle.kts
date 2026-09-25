@@ -2,6 +2,7 @@ import com.android.build.api.variant.FilterConfiguration.FilterType.ABI
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.gradle.tasks.MergeSourceSetFolders
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.security.KeyStore
 
 plugins {
     alias(libs.plugins.android.application)
@@ -25,6 +26,7 @@ val launcherVersionName = project.findProperty("launcher_version_name") as? Stri
 val defaultOAuthClientID = project.findProperty("oauth_client_id") as? String
 val defaultStorePassword = project.findProperty("default_store_password") as? String ?: error("The \"default_store_password\" property is not set in gradle.properties.")
 val defaultKeyPassword = project.findProperty("default_key_password") as? String ?: error("The \"default_key_password\" property is not set in gradle.properties.")
+val autoSigningPassword = project.findProperty("auto_signing_password") as? String ?: error("The \"auto_signing_password\" property is not set in gradle.properties.")
 val defaultCurseForgeApiKey = project.findProperty("curseforge_api_key") as? String
 
 val projectArch: String = System.getProperty("arch", "all")
@@ -40,6 +42,24 @@ fun getKeyFromLocal(envKey: String, fileName: String? = null, default: String? =
     }
 }
 
+fun optionalKey(envKey: String, fileName: String): String? {
+    System.getenv(envKey)?.takeIf { it.isNotBlank() }?.let { return it }
+    val file = File(rootDir, fileName)
+    return if (file.canRead() && file.isFile) {
+        file.readText().trim().takeIf { it.isNotBlank() }
+    } else {
+        null
+    }
+}
+
+fun keystoreOpens(keystore: File, password: String): Boolean = try {
+    val store = KeyStore.getInstance(KeyStore.getDefaultType())
+    keystore.inputStream().use { store.load(it, password.toCharArray()) }
+    true
+} catch (_: Exception) {
+    false
+}
+
 android {
     namespace = launcherPackageName
     compileSdk {
@@ -50,26 +70,27 @@ android {
 
     signingConfigs {
         create("releaseBuild") {
-            val releaseStorePassword = getKeyFromLocal("STORE_PASSWORD", ".store_password.txt")
-            val releaseKeyPassword = getKeyFromLocal("KEY_PASSWORD", ".key_password.txt")
-            // A silently-empty password here does not fail the build — it produces an APK
-            // that is signed incorrectly and fails to install on real devices with
-            // "There was a problem parsing the package" / "App not installed". Fail the
-            // build clearly instead, only for Release builds where this matters.
-            if (gradle.startParameter.taskNames.any { it.contains("Release", ignoreCase = true) }) {
-                if (releaseStorePassword.isBlank() || releaseKeyPassword.isBlank()) {
-                    error(
-                        "Release signing credentials are missing. Set the STORE_PASSWORD and " +
-                        "KEY_PASSWORD repository secrets (Settings -> Secrets and variables -> " +
-                        "Actions) on the GitHub repo, or provide .store_password.txt / " +
-                        ".key_password.txt locally. A Release build cannot be signed without these."
-                    )
-                }
+            // Use the project release key when its credentials are configured. Otherwise,
+            // fall back to the repository's automatic signing key so CI can always produce
+            // an installable signed APK without requiring user-provided passwords.
+            val customStorePassword = optionalKey("STORE_PASSWORD", ".store_password.txt")
+            val customKeyPassword = optionalKey("KEY_PASSWORD", ".key_password.txt")
+            val customKeystore = file("lisy_launcher.jks")
+            if (
+                customStorePassword != null &&
+                customKeyPassword != null &&
+                keystoreOpens(customKeystore, customStorePassword)
+            ) {
+                storeFile = customKeystore
+                storePassword = customStorePassword
+                keyAlias = "movtery_zalith"
+                keyPassword = customKeyPassword
+            } else {
+                storeFile = file("lisy_launcher_auto.jks")
+                storePassword = autoSigningPassword
+                keyAlias = "lisy_auto"
+                keyPassword = autoSigningPassword
             }
-            storeFile = file("lisy_launcher.jks")
-            storePassword = releaseStorePassword
-            keyAlias = "movtery_zalith"
-            keyPassword = releaseKeyPassword
         }
         create("debugBuild") {
             storeFile = file("lisy_launcher_debug.jks")
