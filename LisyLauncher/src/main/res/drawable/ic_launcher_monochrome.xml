@@ -1,36 +1,19 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <group
-        android:pivotX="32"
-        android:pivotY="32"
-        android:scaleX="1.1"
-        android:scaleY="1.1"
-        android:translateX="22"
-        android:translateY="22">
-        <path
-            android:fillAlpha="0.5"
-            android:fillColor="#FF000000"
-            android:pathData="M32,32 L56.25,18 L56.25,46 L32,60 Z"
-            android:strokeColor="#FF000000"
-            android:strokeAlpha="0.5"
-            android:strokeLineJoin="round"
-            android:strokeWidth="1.5" />
-        <path
-            android:fillAlpha="0.75"
-            android:fillColor="#FF000000"
-            android:pathData="M7.75,18 L32,32 L32,60 L7.75,46 Z"
-            android:strokeColor="#FF000000"
-            android:strokeAlpha="0.75"
-            android:strokeLineJoin="round"
-            android:strokeWidth="1.5" />
-        <path
-            android:fillColor="#FF000000"
-            android:pathData="M32,4 L56.25,18 L32,32 L7.75,18 Z"
-            android:strokeColor="#FF000000"
-            android:strokeLineJoin="round"
-            android:strokeWidth="1.5" />
-    </group>
+    android:viewportWidth="1558.9"
+    android:viewportHeight="1800.1">
+  <group android:scaleX="0.41568357"
+      android:scaleY="0.48"
+      android:translateX="455.44543"
+      android:translateY="468.026">
+    <path
+        android:pathData="M390,674.9l0,450.3l390,225.2l390,-225.2l0,-450.3l-390,-225.2l-390,225.2z"
+        android:strokeWidth="0"
+        android:fillColor="#fff"/>
+    <path
+        android:pathData="m779.5,0l779.5,450v900l-779.5,450L0,1350.1L0,450L779.5,0ZM289,675.6v448.9c0,36.2 19.3,69.6 50.6,87.7l388.8,224.4c31.3,18.1 69.9,18.1 101.2,0l388.8,-224.4c31.3,-18.1 50.6,-51.5 50.6,-87.7v-448.9c0,-36.2 -19.3,-69.6 -50.6,-87.7l-388.8,-224.4c-31.3,-18.1 -69.9,-18.1 -101.2,0l-388.8,224.4c-31.3,18.1 -50.6,51.5 -50.6,87.7Z"
+        android:strokeWidth="0"
+        android:fillColor="#fff"/>
+  </group>
 </vector>

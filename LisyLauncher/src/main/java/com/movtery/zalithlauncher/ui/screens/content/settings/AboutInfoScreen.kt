@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -55,6 +56,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -75,6 +77,7 @@ import com.movtery.zalithlauncher.path.URL_PROJECT
 import com.movtery.zalithlauncher.path.URL_PROJECT_INFO
 import com.movtery.zalithlauncher.path.URL_SUPPORT
 import com.movtery.zalithlauncher.path.URL_WEBLATE
+import com.movtery.zalithlauncher.path.URL_WEBSITE
 import com.movtery.zalithlauncher.setting.AllSettings
 import com.movtery.zalithlauncher.ui.base.BaseScreen
 import com.movtery.zalithlauncher.ui.components.AnimatedLazyColumn
@@ -137,30 +140,25 @@ fun AboutInfoScreen(
                         Text(
                             modifier = Modifier.padding(horizontal = 4.dp).alpha(0.7f),
                             text = "${BuildKeys.LAUNCHER_NAME} resmi olmayan (unofficial) bir değiştirilmiş sürümdür; " +
-                                "ZalithLauncher2 (MovTery ve katkıda bulunanlar) temel alınarak GPLv3 lisansı altında geliştirilmiştir.",
+                                "GPLv3 açık kaynak lisansı altında AltayHR tarafından geliştirilmiştir.",
                             style = MaterialTheme.typography.bodySmall
                         )
 
                         UpdateChannelItem(openLink = openLink)
-
-                        ButtonIconItem(
-                            icon = painterResource(R.drawable.img_avatar_movtery),
-                            title = stringResource(R.string.about_launcher_author_movtery_title),
-                            text = stringResource(R.string.about_launcher_author_movtery_text, BuildKeys.LAUNCHER_NAME),
-                            button = {
-                                Button(
-                                    onClick = { openLink(URL_SUPPORT) }
-                                ) {
-                                    Text(text = stringResource(R.string.about_sponsor))
-                                }
-                            }
-                        )
 
                         LinkIconItem(
                             icon = painterResource(R.drawable.ic_github),
                             title = "ThT0AltayHR",
                             text = "${BuildKeys.LAUNCHER_NAME} geliştiricisi",
                             openLink = { openLink("https://github.com/ThT0AltayHR") },
+                            useImage = false
+                        )
+
+                        LinkIconItem(
+                            icon = painterResource(R.drawable.ic_link),
+                            title = "Resmi Web Sitemiz",
+                            text = "Bir sorunla mı karşılaştınız? Web sitemizden bize ulaşabilirsiniz.",
+                            openLink = { openLink(URL_WEBSITE) },
                             useImage = false
                         )
                     }
@@ -170,78 +168,22 @@ fun AboutInfoScreen(
             animatedItem(scope) { yOffset ->
                 ChunkLayout(
                     modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                    title = stringResource(R.string.about_acknowledgements_title)
+                    title = "İlham Aldıklarımız"
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        ButtonIconItem(
-                            icon = painterResource(R.drawable.img_avatar_bangbang93),
-                            title = "bangbang93",
-                            text = stringResource(R.string.about_acknowledgements_bangbang93_text, BuildKeys.LAUNCHER_SHORT_NAME),
-                            button = {
-                                Button(
-                                    onClick = { openLink("https://ifdian.net/a/bangbang93") }
-                                ) {
-                                    Text(text = stringResource(R.string.about_sponsor))
-                                }
-                            }
-                        )
                         LinkIconItem(
-                            icon = painterResource(R.drawable.img_launcher_fcl),
-                            title = "Fold Craft Launcher",
-                            text = stringResource(R.string.about_acknowledgements_fcl_text, BuildKeys.LAUNCHER_SHORT_NAME),
-                            openLicense = { openLicense(R.raw.fcl_license) },
-                            openLink = { openLink("https://github.com/FCL-Team/FoldCraftLauncher") }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.img_launcher_hmcl),
-                            title = "Hello Minecraft! Launcher",
-                            text = stringResource(R.string.about_acknowledgements_hmcl_text, BuildKeys.LAUNCHER_SHORT_NAME),
-                            openLicense = { openLicense(R.raw.hmcl_license) },
-                            openLink = { openLink("https://github.com/HMCL-dev/HMCL") }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.img_platform_mcmod),
-                            title = stringResource(R.string.about_acknowledgements_mcmod),
-                            text = stringResource(R.string.about_acknowledgements_mcmod_text, BuildKeys.LAUNCHER_SHORT_NAME),
-                            openLink = { openLink(URL_MCMOD) }
-                        )
-                        ButtonIconItem(
-                            icon = painterResource(R.drawable.img_avatar_mcim),
-                            title = "mcmod-info-mirror",
-                            text = stringResource(R.string.about_acknowledgements_mcim_text, BuildKeys.LAUNCHER_SHORT_NAME),
-                            button = {
-                                Button(
-                                    onClick = { openLink("https://www.mcimirror.top/sponsor") }
-                                ) {
-                                    Text(text = stringResource(R.string.about_sponsor))
-                                }
-                            }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.img_launcher_pcl2),
-                            title = "Plain Craft Launcher 2",
-                            text = stringResource(R.string.about_acknowledgements_pcl_text, BuildKeys.LAUNCHER_SHORT_NAME),
-                            openLink = { openLink("https://github.com/Meloong-Git/PCL") }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.img_launcher_pojav),
-                            title = "PojavLauncher",
-                            text = stringResource(R.string.about_acknowledgements_pojav_text, BuildKeys.LAUNCHER_SHORT_NAME),
-                            openLicense = { openLicense(R.raw.lgpl_3_license) },
-                            openLink = { openLink("https://github.com/PojavLauncherTeam/PojavLauncher") }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.ic_github),
-                            title = stringResource(R.string.about_acknowledgements_github_community),
-                            text = stringResource(R.string.about_acknowledgements_github_community_text),
-                            openLink = { openLink(URL_COMMUNITY) },
+                            icon = painterResource(R.drawable.ic_link),
+                            title = "LabyMod",
+                            text = "Arayüz tasarımı fikirleri için teşekkürler",
+                            openLink = { openLink("https://www.labymod.net/") },
                             useImage = false
                         )
                         LinkIconItem(
-                            icon = painterResource(R.drawable.img_platform_weblate),
-                            title = stringResource(R.string.about_acknowledgements_weblate_community),
-                            text = stringResource(R.string.about_acknowledgements_weblate_community_text),
-                            openLink = { openLink(URL_WEBLATE) }
+                            icon = painterResource(R.drawable.ic_link),
+                            title = "Lunar Client",
+                            text = "Performans yaklaşımları için teşekkürler",
+                            openLink = { openLink("https://www.lunarclient.com/") },
+                            useImage = false
                         )
                     }
                 }
@@ -274,6 +216,42 @@ fun AboutInfoScreen(
                             }
                         }
                     }
+                }
+            }
+
+            //Ticari marka bildirimi (küçük, sayfa altı)
+            animatedItem(scope) { yOffset ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset { IntOffset(x = 0, y = yOffset.roundToPx()) }
+                        .padding(top = 4.dp, bottom = 8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(20.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.ic_minecraft_trademark),
+                            contentDescription = null,
+                            modifier = Modifier.height(26.dp).alpha(0.85f)
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.ic_xbox_gamestudios_trademark),
+                            contentDescription = null,
+                            modifier = Modifier.height(26.dp).alpha(0.85f)
+                        )
+                    }
+                    Text(
+                        modifier = Modifier
+                            .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+                            .alpha(0.6f),
+                        text = "Minecraft ve Xbox, Microsoft Corporation'ın ticari markalarıdır. " +
+                            "${BuildKeys.LAUNCHER_NAME}, Microsoft veya Mojang Studios ile resmi olarak bağlantılı değildir.",
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }

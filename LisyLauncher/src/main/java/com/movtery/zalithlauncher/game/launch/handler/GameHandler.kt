@@ -35,7 +35,6 @@ import com.movtery.zalithlauncher.game.input.LWJGLCharSender
 import com.movtery.zalithlauncher.game.launch.GameLauncher
 import com.movtery.zalithlauncher.game.launch.LaunchConfig
 import com.movtery.zalithlauncher.game.launch.MCOptions
-import com.movtery.zalithlauncher.game.launch.applyPerformanceProfile
 import com.movtery.zalithlauncher.game.launch.loadLanguage
 import com.movtery.zalithlauncher.game.sdl.SdlBridge
 import com.movtery.zalithlauncher.game.sdl.handleGamepadKeyEvent
@@ -126,9 +125,6 @@ class GameHandler(
                 }
                 else -> set(graphicsOption, graphicsApi.option)
             }
-
-            //Performans profili (kapalıysa oyunun ayarlarına dokunmaz)
-            applyPerformanceProfile()
 
             loadLanguage(version.getVersionInfo()!!.minecraftVersion)
             save()

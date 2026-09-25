@@ -81,6 +81,13 @@ include $(BUILD_SHARED_LIBRARY)
 
 
 include $(CLEAR_VARS)
+LOCAL_LDLIBS := -ldl -llog -landroid -laaudio
+LOCAL_MODULE := micbridge
+LOCAL_SRC_FILES := mic_bridge.c
+include $(BUILD_SHARED_LIBRARY)
+
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := linkerhook
 LOCAL_SRC_FILES := \
     linkerhook/linkerhook.cpp \

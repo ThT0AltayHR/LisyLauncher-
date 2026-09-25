@@ -73,7 +73,6 @@ val libraryData = listOf(
     LibraryInfo("OkHttp", "Copyright © 2019 Square, Inc.", LICENSE_APACHE_2, "https://github.com/square/okhttp"),
     LibraryInfo("Okio", "Copyright © 2013 Square, Inc.", LICENSE_APACHE_2, "https://square.github.io/okio/"),
     LibraryInfo("OpenNBT", "Copyright © 2013-2021 Steveice10.", License(LICENSE_MIT, R.raw.opennbt_license), "https://github.com/GeyserMC/OpenNBT"),
-    LibraryInfo("Phosphor Icons", "Copyright © Phosphor Icons", License(LICENSE_MIT, R.raw.phosphor_license), "https://github.com/phosphor-icons/core"),
     LibraryInfo("Process Phoenix", "Copyright © 2015 Jake Wharton", LICENSE_APACHE_2, "https://github.com/JakeWharton/ProcessPhoenix"),
     LibraryInfo("proxy-client-android", null, License(LICENSE_LGPL_3, R.raw.lgpl_3_license), "https://github.com/TouchController/TouchController"),
     LibraryInfo("Reorderable", "Copyright © 2023 Calvin Liang", LICENSE_APACHE_2, "https://github.com/Calvin-LL/Reorderable"),

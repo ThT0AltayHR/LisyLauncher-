@@ -252,9 +252,13 @@ class GameLauncher(
 
     override fun getRuntimeLibraryPath(): String {
         val parent = super.getRuntimeLibraryPath()
-        return jnaDir?.absolutePath?.let { dirPath ->
+        val withJna = jnaDir?.absolutePath?.let { dirPath ->
             "$parent:$dirPath"
         } ?: parent
+        //libmicbridge.so uygulamanın kendi native kütüphane dizininde bulunuyor
+        //(LWJGL'in natives_directory'sinde değil), bu yüzden java.library.path'e
+        //ayrıca ekleniyor ki misafir JVM'deki System.loadLibrary("micbridge") onu bulabilsin.
+        return "$withJna:${activity.applicationInfo.nativeLibraryDir}"
     }
 
     private fun tryStartTouchProxy() {

@@ -104,7 +104,7 @@ import com.movtery.zalithlauncher.ui.control.input.HidableInputLayout
 import com.movtery.zalithlauncher.ui.control.input.TextInputMode
 import com.movtery.zalithlauncher.ui.screens.game.elements.OpenFolderLayer
 import com.movtery.zalithlauncher.ui.screens.game.elements.OpenFolderOperation
-import com.movtery.zalithlauncher.ui.theme.ZalithLauncherTheme
+import com.movtery.zalithlauncher.ui.theme.LisyLauncherTheme
 import com.movtery.zalithlauncher.ui.toAndroidString
 import com.movtery.zalithlauncher.utils.computeGameDisplayLayout
 import com.movtery.zalithlauncher.utils.computeGameRenderSize
@@ -478,7 +478,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener, SurfaceHolde
         }
 
         setContent {
-            ZalithLauncherTheme {
+            LisyLauncherTheme {
                 ObserveFullScreenSetting(AllSettings.gameFullScreen.state)
                 Screen {
                     withHandler {
@@ -738,7 +738,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener, SurfaceHolde
         SdlBridge.prepareSurface(this, nativeSurface, gameSurfaceView?.parent as? ViewGroup, surface)
         //游戏请求 GLFW direct gamepad 时的通知接收方
         CallbackBridge.setDirectGamepadEnableHandler {
-            LoggerBridge.append("ZalithLauncher: Direct gamepad handler enabled")
+            LoggerBridge.append("LisyLauncher: Direct gamepad handler enabled")
         }
         if (vmViewModel.isRunning) {
             ZLBridge.setupBridgeWindow(nativeSurface)

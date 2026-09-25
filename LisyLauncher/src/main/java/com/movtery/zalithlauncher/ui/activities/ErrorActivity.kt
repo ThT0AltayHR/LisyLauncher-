@@ -36,7 +36,7 @@ import com.movtery.zalithlauncher.path.PathManager
 import com.movtery.zalithlauncher.ui.base.BaseAppCompatActivity
 import com.movtery.zalithlauncher.ui.screens.main.ErrorScreen
 import com.movtery.zalithlauncher.ui.screens.main.crashlogs.ShareLinkOperation
-import com.movtery.zalithlauncher.ui.theme.ZalithLauncherTheme
+import com.movtery.zalithlauncher.ui.theme.LisyLauncherTheme
 import com.movtery.zalithlauncher.ui.theme.backgroundColor
 import com.movtery.zalithlauncher.ui.theme.onBackgroundColor
 import com.movtery.zalithlauncher.utils.copyText
@@ -129,7 +129,7 @@ class ErrorActivity : BaseAppCompatActivity() {
         val logExists = logFile.exists() && logFile.isFile
 
         setContent {
-            ZalithLauncherTheme {
+            LisyLauncherTheme {
                 ShareLinkOperation(
                     operation = viewModel.operation,
                     onChange = { viewModel.operation = it },

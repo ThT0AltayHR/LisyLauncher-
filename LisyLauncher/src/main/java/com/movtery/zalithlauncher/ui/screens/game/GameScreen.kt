@@ -22,6 +22,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -35,6 +36,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -89,6 +91,8 @@ import com.movtery.zalithlauncher.setting.enums.toAction
 import com.movtery.zalithlauncher.terracotta.Terracotta
 import com.movtery.zalithlauncher.ui.components.BackgroundCard
 import com.movtery.zalithlauncher.ui.components.MenuState
+import com.movtery.zalithlauncher.ui.components.SocialWebPanel
+import com.movtery.zalithlauncher.ui.components.SocialWebTarget
 import com.movtery.zalithlauncher.ui.components.rememberBoxSize
 import com.movtery.zalithlauncher.ui.control.MinecraftHotbar
 import com.movtery.zalithlauncher.ui.control.event.launcherEvent
@@ -676,6 +680,43 @@ fun GameScreen(
             },
             modifier = Modifier.fillMaxSize()
         )
+
+        //Sosyal/web entegrasyonları: Discord, Telegram, YouTube, Chrome — oyundan çıkmadan
+        //erişim (sunucu doğrulaması/AFK bekleme gibi durumlar için). Ekranın boş, sağ orta
+        //kısmına yerleştirildi; kontrol düzenine dahil değildir, her zaman aynı yerdedir.
+        var openSocialPanel by remember { mutableStateOf<SocialWebTarget?>(null) }
+        if (!viewModel.isEditingLayout) {
+            Column(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                SocialWebTarget.entries.forEach { target ->
+                    Surface(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clickable { openSocialPanel = target },
+                        shape = MaterialTheme.shapes.medium,
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.55f)
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Text(
+                                text = target.displayTitle.take(1),
+                                style = MaterialTheme.typography.labelLarge
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        openSocialPanel?.let { target ->
+            SocialWebPanel(
+                title = target.displayTitle,
+                url = target.url,
+                onDismiss = { openSocialPanel = null }
+            )
+        }
 
         GameMenuSubscreen(
             state = viewModel.gameMenuState,

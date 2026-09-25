@@ -1,0 +1,16 @@
+type = custom_gui_screens
+
+overridden_screens {
+}
+
+custom_gui {
+  identifier = lisylauncher.intro
+  title = 
+  allow_esc = false
+  transparent_world_background = false
+  transparent_world_background_overlay = false
+  pause_game = false
+  popup_mode = true
+  popup_mode_background_overlay = false
+}
+

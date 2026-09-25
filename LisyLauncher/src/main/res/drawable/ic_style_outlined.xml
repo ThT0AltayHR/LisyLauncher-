@@ -1,13 +1,24 @@
+<!--
+  ~ Copyright (C) 2026 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="304"
-    android:viewportHeight="304">
-  <group
-      android:translateX="24"
-      android:translateY="24">
-    <path
-        android:pathData="M200.77,53.89A103.27,103.27,0,0,0,128,24h-1.07A104,104,0,0,0,24,128c0,43,26.58,79.06,69.36,94.17A32,32,0,0,0,136,192a16,16,0,0,1,16-16h46.21a31.81,31.81,0,0,0,31.2-24.88,104.43,104.43,0,0,0,2.59-24A103.28,103.28,0,0,0,200.77,53.89Zm13,93.71A15.89,15.89,0,0,1,198.21,160H152a32,32,0,0,0-32,32,16,16,0,0,1-21.31,15.07C62.49,194.3,40,164,40,128a88,88,0,0,1,87.09-88h.9a88.35,88.35,0,0,1,88,87.25A88.86,88.86,0,0,1,213.81,147.6ZM140,76a12,12,0,1,1-12-12A12,12,0,0,1,140,76ZM96,100A12,12,0,1,1,84,88,12,12,0,0,1,96,100Zm0,56a12,12,0,1,1-12-12A12,12,0,0,1,96,156Zm88-56a12,12,0,1,1-12-12A12,12,0,0,1,184,100Z"
-        android:fillColor="#FF1F1F1F"/>
-  </group>
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+  <path
+      android:pathData="m159,792 l-34,-14q-31,-13 -41.5,-45t3.5,-63l72,-156v278ZM319,880q-33,0 -56.5,-23.5T239,800v-240l106,294q3,7 6,13.5t8,12.5h-40ZM525,876q-32,12 -62,-3t-42,-47L243,338q-12,-32 2,-62.5t46,-41.5l302,-110q32,-12 62,3t42,47l178,488q12,32 -2,62.5T827,766L525,876ZM467.5,388.5Q479,377 479,360t-11.5,-28.5Q456,320 439,320t-28.5,11.5Q399,343 399,360t11.5,28.5Q422,400 439,400t28.5,-11.5ZM497,800l302,-110 -178,-490 -302,110 178,490ZM319,310l302,-110 -302,110Z"
+      android:fillColor="#1f1f1f"/>
 </vector>

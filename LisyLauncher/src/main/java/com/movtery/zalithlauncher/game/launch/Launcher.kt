@@ -297,11 +297,42 @@ abstract class Launcher(
         // Overridden by us to specify the exact number of cores that the android system has
         args.purgeArg("-XX:ActiveProcessorCount")
 
-        // ---- Performans ayarları (Ayarlar > Performans) ----
-        // GC türü, duraklama hedefi, JIT modu vb. ayarlardan gelir. Varsayılan değerler,
-        // önceki sürümlerde sabit uygulanan değerlerle aynıdır. Yığın (heap) boyutuna
-        // dokunulmaz; o, aşağıdaki RAM ayarıyla belirlenir.
-        args.applyPerformanceJvmArgs()
+        // ---- Embedded runtime/GC tuning (always applied, not a user-facing setting) ----
+        // Goal: reduce GC-induced stutter and heap/metaspace bloat on memory-constrained
+        // mobile devices, especially with large/heavy modpacks. These are widely-used,
+        // conservative JVM flags (not experimental), scoped to GC/runtime behavior only —
+        // they never touch heap size itself, which stays fully controlled by the user's
+        // own RAM allocation setting below.
+        args.purgeArg("-XX:+UseG1GC")
+        args.purgeArg("-XX:MaxGCPauseMillis")
+        args.purgeArg("-XX:+ParallelRefProcEnabled")
+        args.purgeArg("-XX:+DisableExplicitGC")
+        args.purgeArg("-XX:G1RSetUpdatingPauseTimePercent")
+        args.purgeArg("-XX:+UseStringDeduplication")
+        args.purgeArg("-XX:+IgnoreUnrecognizedVMOptions")
+        // Safety net: this launcher supports JRE 8/17/21/25 depending on the Minecraft
+        // version, but the tuning flags below are only guaranteed on newer JVMs. Without
+        // this flag, an unrecognized "-XX" option makes the JVM refuse to start AT ALL
+        // (looks like the game "won't launch"/crashes every time) instead of just skipping
+        // that one option. This must come before the flags it is meant to protect.
+        args.add("-XX:+IgnoreUnrecognizedVMOptions")
+        args.add("-XX:+UseG1GC")
+        args.add("-XX:MaxGCPauseMillis=100")
+        args.add("-XX:+ParallelRefProcEnabled")
+        // Mods/libraries sometimes call System.gc() directly, forcing a full stop-the-world
+        // pause; ignoring those explicit calls (G1 still collects normally on its own
+        // schedule) removes one of the most common causes of sudden mid-game freezes.
+        args.add("-XX:+DisableExplicitGC")
+        args.add("-XX:G1RSetUpdatingPauseTimePercent=5")
+        // Deduplicates identical heap Strings (block/item IDs, NBT keys, translation keys
+        // are heavily repeated in large modpacks) — real memory savings, no crash risk.
+        args.add("-XX:+UseStringDeduplication")
+        // Large modpacks (300MB+) load a huge number of classes at startup; without this,
+        // Metaspace repeatedly resizes/triggers GC while classes are still loading. This only
+        // raises the INITIAL threshold before the first resize — it does not cap the maximum,
+        // so it cannot cause an OutOfMemoryError that a smaller modpack wouldn't already avoid.
+        args.purgeArg("-XX:MetaspaceSize")
+        args.add("-XX:MetaspaceSize=256m")
 
         args.add("-javaagent:${LibPath.MIO_LIB_PATCHER.absolutePath}")
 
@@ -549,6 +580,14 @@ fun getCacioJavaArgs(
     val cacioFiles = if (isJava8) LibPath.CACIO_8 else LibPath.CACIO_17
     cacioFiles.listFiles()?.onEach {
         if (it.name.endsWith(".jar")) cacioClassPath.append(":").append(it.absolutePath)
+    }
+
+    // Mikrofon köprüsü (javax.sound.sampled SPI, bkz. mic-bridge-jvm modülü) aynı
+    // bootclasspath argümanına ekleniyor; böylece sesli sohbet modları için ekstra
+    // bir -Xbootclasspath argümanı daha eklemeye gerek kalmıyor. Dosya henüz
+    // açılmamışsa (ör. ilk kurulum/güncelleme henüz tamamlanmadıysa) sessizce atlanır.
+    if (LibPath.MIC_BRIDGE.exists()) {
+        cacioClassPath.append(":").append(LibPath.MIC_BRIDGE.absolutePath)
     }
 
     argsList.add(cacioClassPath.toString())

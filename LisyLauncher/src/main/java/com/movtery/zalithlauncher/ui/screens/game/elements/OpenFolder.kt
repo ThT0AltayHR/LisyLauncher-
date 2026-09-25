@@ -80,7 +80,7 @@ import com.movtery.zalithlauncher.ui.components.MarqueeText
 import com.movtery.zalithlauncher.ui.components.ProgressDialog
 import com.movtery.zalithlauncher.ui.components.SimpleAlertDialog
 import com.movtery.zalithlauncher.ui.screens.content.elements.BaseFileItem
-import com.movtery.zalithlauncher.ui.theme.ZalithLauncherTheme
+import com.movtery.zalithlauncher.ui.theme.LisyLauncherTheme
 import com.movtery.zalithlauncher.ui.theme.itemColor
 import com.movtery.zalithlauncher.ui.theme.onItemColor
 import com.movtery.zalithlauncher.ui.theme.showThemed
@@ -432,7 +432,7 @@ private fun ImportFileOperation(
 @Preview(showBackground = true)
 @Composable
 private fun OpenFolderLayerPreview() {
-    ZalithLauncherTheme {
+    LisyLauncherTheme {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {

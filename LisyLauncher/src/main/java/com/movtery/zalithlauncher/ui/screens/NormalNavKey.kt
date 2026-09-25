@@ -77,14 +77,6 @@ sealed interface NormalNavKey : TitledNavKey {
 
     /** 设置嵌套子屏幕 */
     sealed interface Settings : NormalNavKey {
-        /** 性能设置屏幕 */
-        @Serializable data object Performance : Settings {
-            @Contextual override val title: AndroidStringText = androidText(R.string.settings_tab_performance)
-        }
-        /** 外观设置屏幕 */
-        @Serializable data object Appearance : Settings {
-            @Contextual override val title: AndroidStringText = androidText(R.string.settings_tab_appearance)
-        }
         /** 渲染器设置屏幕 */
         @Serializable data object Renderer : Settings {
             @Contextual override val title: AndroidStringText = androidText(R.string.settings_tab_renderer)
@@ -188,8 +180,7 @@ sealed interface NormalNavKey : TitledNavKey {
     /** 搜索光影包屏幕 */
     @Serializable data object SearchShaders : NormalNavKey
     /** 搜索ID屏幕 */
-    @Serializable data object SearchId : NormalNavKey {
-        @Contextual override val title: AndroidStringText = androidText(R.string.download_category_by_id)
+    @Serializable data object SearchId : NormalNavKey {        @Contextual override val title: AndroidStringText = androidText(R.string.download_category_by_id)
     }
 
     /** 下载资源屏幕 */
@@ -204,4 +195,14 @@ sealed interface NormalNavKey : TitledNavKey {
     @Serializable data class License(
         val raw: Int
     ): NormalNavKey
+
+    /** Sunucu arama ekranı */
+    @Serializable data object ServerList : NormalNavKey {
+        @Contextual override val title: AndroidStringText = androidText(R.string.serverlist_title)
+    }
+
+    /** Skin gardırop ekranı */
+    @Serializable data object SkinWardrobe : NormalNavKey {
+        @Contextual override val title: AndroidStringText = androidText(R.string.wardrobe_title)
+    }
 }

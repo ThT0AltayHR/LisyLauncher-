@@ -20,16 +20,11 @@ package com.movtery.zalithlauncher.ui.screens.main
 
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,13 +32,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -61,14 +52,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
 import com.movtery.zalithlauncher.BuildKeys
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.setting.AllSettings
@@ -160,10 +148,7 @@ private fun ErrorScreenLandscape(
                     .height(40.dp),
                 contentAlignment = Alignment.Center
             ) {
-                ErrorTitle(
-                    modifier = Modifier.padding(horizontal = 56.dp),
-                    text = text
-                )
+                Text(text = text)
                 //旋转竖屏
                 IconButton(
                     modifier = Modifier
@@ -244,7 +229,7 @@ private fun ErrorScreenPortrait(
                 ),
                 title = {
                     //应用标题
-                    ErrorTitle(text = BuildKeys.LAUNCHER_NAME)
+                    Text(text = BuildKeys.LAUNCHER_NAME)
                 },
                 actions = {
                     //旋转横屏
@@ -363,8 +348,7 @@ private fun ErrorContent(
     BackgroundCard(
         modifier = modifier,
         influencedByBackground = false,
-        shape = RoundedCornerShape(20.dp),
-        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.error.copy(alpha = 0.35f))
+        shape = MaterialTheme.shapes.extraLarge
     ) {
         Column(
             modifier = Modifier
@@ -389,115 +373,54 @@ private fun ActionLayout(
     onRestartClick: () -> Unit = {},
     onExitClick: () -> Unit = {}
 ) {
-    val buttonShape = RoundedCornerShape(14.dp)
-
     Column(modifier = modifier) {
         Column(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.Top
         ) {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(50))
-                    .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.6f))
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
-            ) {
-                Text(
-                    text = stringResource(
-                        R.string.crash_type,
-                        stringResource(crashType.textRes)
-                    ),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onErrorContainer
-                )
-            }
+            Text(
+                text = stringResource(
+                    R.string.crash_type,
+                    stringResource(crashType.textRes)
+                ),
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.Bottom)
+            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.Bottom)
         ) {
             if (canUpload) {
                 ScalingActionButton(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = buttonShape,
-                    colors = ButtonDefaults.filledTonalButtonColors(),
                     onClick = onUploadClick
                 ) {
-                    ActionIcon(R.drawable.ic_upload)
                     MarqueeText(text = stringResource(R.string.crash_link_share_button))
                 }
             }
             if (shareLogs) {
                 ScalingActionButton(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = buttonShape,
-                    colors = ButtonDefaults.filledTonalButtonColors(),
                     onClick = onShareLogsClick
                 ) {
-                    ActionIcon(R.drawable.ic_share_filled)
                     MarqueeText(text = stringResource(R.string.crash_share_logs))
                 }
             }
             if (canRestart) {
                 ScalingActionButton(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = buttonShape,
                     onClick = onRestartClick
                 ) {
-                    ActionIcon(R.drawable.ic_restart_alt)
                     MarqueeText(text = stringResource(R.string.crash_restart))
                 }
             }
             ScalingActionButton(
                 modifier = Modifier.fillMaxWidth(),
-                shape = buttonShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer,
-                    contentColor = MaterialTheme.colorScheme.onErrorContainer
-                ),
                 onClick = onExitClick
             ) {
-                ActionIcon(R.drawable.ic_exit_to_app)
                 MarqueeText(text = stringResource(R.string.crash_exit))
             }
         }
-    }
-}
-
-@Composable
-private fun RowScope.ActionIcon(
-    @DrawableRes iconRes: Int
-) {
-    Icon(
-        modifier = Modifier.size(18.dp),
-        painter = painterResource(iconRes),
-        contentDescription = null
-    )
-    Spacer(modifier = Modifier.width(8.dp))
-}
-
-@Composable
-private fun ErrorTitle(
-    text: String,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Icon(
-            modifier = Modifier.size(20.dp),
-            painter = painterResource(R.drawable.ic_bug_filled),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.error
-        )
-        Text(
-            text = text,
-            style = MaterialTheme.typography.titleMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
     }
 }
 

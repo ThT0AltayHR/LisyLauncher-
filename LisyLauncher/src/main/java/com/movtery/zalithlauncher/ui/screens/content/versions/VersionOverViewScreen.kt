@@ -79,6 +79,7 @@ import com.movtery.zalithlauncher.utils.string.getMessageOrToString
 import com.movtery.zalithlauncher.viewmodel.ErrorViewModel
 import com.movtery.zalithlauncher.viewmodel.EventViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.apache.commons.io.FileUtils
 import java.io.File
 
@@ -350,6 +351,34 @@ private fun VersionManagementLayout(
                     Text(
                         text = stringResource(R.string.versions_export)
                     )
+                }
+                if (com.movtery.zalithlauncher.game.version.installed.FancyMenuIntroInstaller.isAvailable()) {
+                    var introInstalling by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+                    var introDone by androidx.compose.runtime.remember {
+                        androidx.compose.runtime.mutableStateOf(
+                            com.movtery.zalithlauncher.game.version.installed.FancyMenuIntroInstaller.isInstalled(version)
+                        )
+                    }
+                    val introScope = androidx.compose.runtime.rememberCoroutineScope()
+                    OutlinedButton(
+                        modifier = Modifier.padding(end = 12.dp),
+                        enabled = !introInstalling,
+                        onClick = {
+                            introInstalling = true
+                            introScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+                                val ok = com.movtery.zalithlauncher.game.version.installed.FancyMenuIntroInstaller.install(version)
+                                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                                    introInstalling = false
+                                    introDone = ok
+                                }
+                            }
+                        }
+                    ) {
+                        Text(
+                            text = if (introDone) stringResource(R.string.menu_intro_installed)
+                                   else stringResource(R.string.menu_intro_install)
+                        )
+                    }
                 }
                 OutlinedButton(
                     modifier = Modifier.padding(end = 12.dp),

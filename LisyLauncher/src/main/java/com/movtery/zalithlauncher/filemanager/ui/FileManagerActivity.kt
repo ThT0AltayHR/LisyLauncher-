@@ -42,7 +42,7 @@ import com.movtery.zalithlauncher.filemanager.FileManagerLauncher
 import com.movtery.zalithlauncher.filemanager.os.FmLog
 import com.movtery.zalithlauncher.filemanager.viewmodel.FileManagerViewModel
 import com.movtery.zalithlauncher.setting.loadAllSettings
-import com.movtery.zalithlauncher.ui.theme.ZalithLauncherTheme
+import com.movtery.zalithlauncher.ui.theme.LisyLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.nio.file.Paths
 
@@ -88,7 +88,7 @@ class FileManagerActivity : ComponentActivity() {
         initializeFromIntent()
 
         setContent {
-            ZalithLauncherTheme {
+            LisyLauncherTheme {
                 FileManagerRootScreen(
                     initResult = initResult,
                     vm = _vm,

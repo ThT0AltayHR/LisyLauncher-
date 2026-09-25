@@ -37,6 +37,7 @@ import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
@@ -61,7 +62,9 @@ fun VideoPlayer(
     muted: Boolean = true,
     @FloatRange(from = 0.0, to = 1.0) volume: Float = if (muted) 0.0f else 1.0f,
     resizeMode: Int = AspectRatioFrameLayout.RESIZE_MODE_ZOOM,
-    refreshTrigger: Any? = null
+    refreshTrigger: Any? = null,
+    onEnded: (() -> Unit)? = null,
+    onError: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     val player = remember {
@@ -106,6 +109,24 @@ fun VideoPlayer(
 
     LaunchedEffect(muted, volume) {
         player.volume = volume
+    }
+
+    DisposableEffect(player, onEnded, onError) {
+        val listener = object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_ENDED) {
+                    onEnded?.invoke()
+                }
+            }
+
+            override fun onPlayerError(error: PlaybackException) {
+                onError?.invoke()
+            }
+        }
+        player.addListener(listener)
+        onDispose {
+            player.removeListener(listener)
+        }
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current

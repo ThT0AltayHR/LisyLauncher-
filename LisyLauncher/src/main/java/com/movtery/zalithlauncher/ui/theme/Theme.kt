@@ -46,84 +46,21 @@ import com.movtery.zalithlauncher.viewmodel.BackgroundViewModel
 import com.movtery.zalithlauncher.viewmodel.LocalBackgroundViewModel
 
 /**
- * Astra: LisyLauncher'ın kendi görsel kimliği. Kömür rengi yüzeyler, ince kenarlıklar ve
- * zümrüt yeşili vurgu. Renkler tek tek elle seçilmiştir; böylece arayüz her cihazda
- * aynı, tutarlı ve okunaklı görünür.
+ * Astra — yıldızlı gece gökyüzünden ilham alan, koyu ve parlak "aurora" vurgu renkli tema.
+ * Diğer isimli temalardeki gibi elle seçilmiş 26 ayrı ton yerine, aynı materialkolor
+ * algoritmasını (Custom tema seçeneğiyle aynı) tek bir "tohum" rengiyle kullanır;
+ * bu da erişilebilirlik açısından doğru kontrast oranlarını garantiler.
  */
-private val astraDark = darkColorScheme(
-    primary = Color(0xFF4ADE80),
-    onPrimary = Color(0xFF06331A),
-    primaryContainer = Color(0xFF14492B),
-    onPrimaryContainer = Color(0xFFB8F5CE),
-    secondary = Color(0xFF9CCBB0),
-    onSecondary = Color(0xFF0B2A1B),
-    secondaryContainer = Color(0xFF1C3B2D),
-    onSecondaryContainer = Color(0xFFCFF5DD),
-    tertiary = Color(0xFFFFB454),
-    onTertiary = Color(0xFF442B00),
-    tertiaryContainer = Color(0xFF5E3F00),
-    onTertiaryContainer = Color(0xFFFFDDB0),
-    error = Color(0xFFFF8A80),
-    onError = Color(0xFF5F0F0A),
-    errorContainer = Color(0xFF7A1F19),
-    onErrorContainer = Color(0xFFFFDAD5),
-    background = Color(0xFF0B0F13),
-    onBackground = Color(0xFFE6EDF3),
-    surface = Color(0xFF0B0F13),
-    onSurface = Color(0xFFE6EDF3),
-    surfaceVariant = Color(0xFF232C35),
-    onSurfaceVariant = Color(0xFF9AA7B4),
-    outline = Color(0xFF5D6B79),
-    outlineVariant = Color(0xFF2A343E),
-    scrim = Color(0xFF000000),
-    inverseSurface = Color(0xFFE6EDF3),
-    inverseOnSurface = Color(0xFF1B232B),
-    inversePrimary = Color(0xFF0F7A3E),
-    surfaceDim = Color(0xFF090C10),
-    surfaceBright = Color(0xFF1B232B),
-    surfaceContainerLowest = Color(0xFF080B0F),
-    surfaceContainerLow = Color(0xFF0E1318),
-    surfaceContainer = Color(0xFF12181E),
-    surfaceContainerHigh = Color(0xFF171E25),
-    surfaceContainerHighest = Color(0xFF1D252D),
+private val astraSeed = Color(0xFF3DD9C4)
+
+private val astraLight = customLight(
+    color = astraSeed,
+    style = PaletteStyle.TonalSpot
 )
 
-private val astraLight = lightColorScheme(
-    primary = Color(0xFF0F7A3E),
-    onPrimary = Color(0xFFFFFFFF),
-    primaryContainer = Color(0xFFB9F3CC),
-    onPrimaryContainer = Color(0xFF00210F),
-    secondary = Color(0xFF4C6355),
-    onSecondary = Color(0xFFFFFFFF),
-    secondaryContainer = Color(0xFFCFE9D8),
-    onSecondaryContainer = Color(0xFF0A1F12),
-    tertiary = Color(0xFF8B5000),
-    onTertiary = Color(0xFFFFFFFF),
-    tertiaryContainer = Color(0xFFFFDCBC),
-    onTertiaryContainer = Color(0xFF2C1600),
-    error = Color(0xFFBA1A1A),
-    onError = Color(0xFFFFFFFF),
-    errorContainer = Color(0xFFFFDAD6),
-    onErrorContainer = Color(0xFF410002),
-    background = Color(0xFFF5F8F6),
-    onBackground = Color(0xFF161D19),
-    surface = Color(0xFFF5F8F6),
-    onSurface = Color(0xFF161D19),
-    surfaceVariant = Color(0xFFDBE5DD),
-    onSurfaceVariant = Color(0xFF404943),
-    outline = Color(0xFF707972),
-    outlineVariant = Color(0xFFBFC9C2),
-    scrim = Color(0xFF000000),
-    inverseSurface = Color(0xFF2B322E),
-    inverseOnSurface = Color(0xFFECF2ED),
-    inversePrimary = Color(0xFF4ADE80),
-    surfaceDim = Color(0xFFDCE3DF),
-    surfaceBright = Color(0xFFFFFFFF),
-    surfaceContainerLowest = Color(0xFFFFFFFF),
-    surfaceContainerLow = Color(0xFFF0F4F1),
-    surfaceContainer = Color(0xFFEAEFEB),
-    surfaceContainerHigh = Color(0xFFE4EAE6),
-    surfaceContainerHighest = Color(0xFFDEE5E0),
+private val astraDark = customDark(
+    color = astraSeed,
+    style = PaletteStyle.TonalSpot
 )
 
 private val embermireLight = lightColorScheme(
@@ -681,7 +618,7 @@ private fun customDark(
 }
 
 @Composable
-fun ZalithLauncherTheme(
+fun LisyLauncherTheme(
     darkTheme: Boolean = isLauncherInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,

@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,7 +34,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.compose.ui.res.painterResource
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.bridge.ZLBridge
 import com.movtery.zalithlauncher.bridge.ZLNativeInvoker
@@ -235,7 +233,7 @@ private fun ButtonsLayout(
             onClick = {
                 ZLBridge.moveWindow(0, -10)
             },
-            iconRes = R.drawable.ic_keyboard_arrow_up
+            text = "▲"
         )
         TextButton(
             modifier = Modifier.constrainAs(right) {
@@ -245,7 +243,7 @@ private fun ButtonsLayout(
             onClick = {
                 ZLBridge.moveWindow(10, 0)
             },
-            iconRes = R.drawable.ic_keyboard_arrow_right
+            text = "▶"
         )
         TextButton(
             modifier = Modifier.constrainAs(down) {
@@ -255,7 +253,7 @@ private fun ButtonsLayout(
             onClick = {
                 ZLBridge.moveWindow(0, 10)
             },
-            iconRes = R.drawable.ic_keyboard_arrow_down
+            text = "▼"
         )
         TextButton(
             modifier = Modifier.constrainAs(left) {
@@ -265,7 +263,7 @@ private fun ButtonsLayout(
             onClick = {
                 ZLBridge.moveWindow(-10, 0)
             },
-            iconRes = R.drawable.ic_keyboard_arrow_left
+            text = "◀"
         )
     }
 }
@@ -274,19 +272,12 @@ private fun ButtonsLayout(
 private fun TextButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    text: String? = null,
-    iconRes: Int? = null
+    text: String
 ) {
     Button(
         modifier = modifier,
         onClick = onClick
     ) {
-        when {
-            text != null -> Text(text)
-            iconRes != null -> Icon(
-                painter = painterResource(iconRes),
-                contentDescription = null
-            )
-        }
+        Text(text = text)
     }
 }

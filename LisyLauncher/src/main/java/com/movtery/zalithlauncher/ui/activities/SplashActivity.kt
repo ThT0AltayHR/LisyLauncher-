@@ -24,6 +24,11 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
@@ -41,7 +46,8 @@ import com.movtery.zalithlauncher.components.jre.UnpackJreTask
 import com.movtery.zalithlauncher.setting.AllSettings
 import com.movtery.zalithlauncher.ui.base.BaseAppCompatActivity
 import com.movtery.zalithlauncher.ui.screens.splash.SplashScreen
-import com.movtery.zalithlauncher.ui.theme.ZalithLauncherTheme
+import com.movtery.zalithlauncher.ui.screens.splash.SplashVideoScreen
+import com.movtery.zalithlauncher.ui.theme.LisyLauncherTheme
 import com.movtery.zalithlauncher.ui.theme.backgroundColor
 import com.movtery.zalithlauncher.ui.theme.onBackgroundColor
 import com.movtery.zalithlauncher.utils.logging.Logger
@@ -79,25 +85,42 @@ class SplashActivity : BaseAppCompatActivity() {
         initUnpackItems()
         checkAllTask()
 
-        if (checkTasksToMain()) {
-            return
-        }
-
         setContent {
-            ZalithLauncherTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = backgroundColor(),
-                    contentColor = onBackgroundColor()
-                ) {
-                    SplashScreen(
-                        startAllTask = { startAllTask() },
-                        unpackItems = unpackItems,
-                        screenViewModel = backStackViewModel
+            LisyLauncherTheme {
+                //每次冷启动都先播放一遍全屏介绍视频，播放完毕后再进入原有的解压/跳转逻辑
+                var introFinished by remember { mutableStateOf(false) }
+
+                if (!introFinished) {
+                    SplashVideoScreen(
+                        onFinished = { introFinished = true }
                     )
+                } else {
+                    LaunchedEffect(Unit) {
+                        proceedPastIntro()
+                    }
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = backgroundColor(),
+                        contentColor = onBackgroundColor()
+                    ) {
+                        SplashScreen(
+                            startAllTask = { startAllTask() },
+                            unpackItems = unpackItems,
+                            screenViewModel = backStackViewModel
+                        )
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * 介绍视频播放结束（或播放出错被跳过）后调用。
+     * 如果没有任何内容需要解压，直接完成本 Activity 并跳转到主界面/处理导入 Intent；
+     * 否则什么都不做，让上面的 SplashScreen 正常显示解压界面。
+     */
+    private fun proceedPastIntro() {
+        checkTasksToMain()
     }
 
     override fun onNewIntent(intent: Intent) {

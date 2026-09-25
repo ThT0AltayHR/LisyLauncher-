@@ -49,5 +49,17 @@ enum class Components(
     LAUNCHER(
         "launcher", "Launcher Components", R.string.unpack_screen_launcher,
         assetsDir = "components/launcher"
+    ),
+    MIC_BRIDGE(
+        "micbridge", "Microphone Bridge", R.string.unpack_screen_micbridge,
+        assetsDir = "components/micbridge"
+    ),
+    SKINS(
+        "skins", "Built-in Skins", R.string.unpack_screen_skins,
+        assetsDir = "components/skins"
+    ),
+    MENU_INTRO(
+        "lisylauncher_intro", "Menu Intro Pack", R.string.unpack_screen_menu_intro,
+        assetsDir = "components/lisylauncher_intro"
     )
 }

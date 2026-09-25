@@ -1,89 +1,98 @@
 <div align="center">
 
-<img src="docs/assets/lisylauncher-logo.png" alt="LisyLauncher" width="760">
+<img src="docs/branding/lisylauncher-logo.png" alt="LisyLauncher" width="600"/>
 
-**Android için modern, hızlı ve dokunmatik öncelikli Minecraft: Java Edition başlatıcısı**
+# 🚀 LisyLauncher
 
-[![Lisans](https://img.shields.io/github/license/ThT0AltayHR/L-syLauncher?style=for-the-badge&color=blue)](LICENSE)
-[![Son Sürüm](https://img.shields.io/github/v/release/ThT0AltayHR/L-syLauncher?include_prereleases&style=for-the-badge&color=success)](https://github.com/ThT0AltayHR/LisyLauncher--/releases)
-[![Derleme](https://img.shields.io/github/actions/workflow/status/ThT0AltayHR/L-syLauncher/push_ci.yml?style=for-the-badge&label=DERLEME)](https://github.com/ThT0AltayHR/LisyLauncher--/actions)
-[![İndirmeler](https://img.shields.io/github/downloads/ThT0AltayHR/L-syLauncher/total?style=for-the-badge&color=orange)](https://github.com/ThT0AltayHR/LisyLauncher--/releases)
-[![Yıldızlar](https://img.shields.io/github/stars/ThT0AltayHR/L-syLauncher?style=for-the-badge&color=yellow)](https://github.com/ThT0AltayHR/LisyLauncher--/stargazers)
+**Android için modern, hızlı ve dokunmatik-öncelikli Minecraft: Java Edition launcher'ı**
+
+[![License](https://img.shields.io/github/license/ThT0AltayHR/L-syLauncher?style=for-the-badge&color=blue)](LICENSE)
+[![Latest Release](https://img.shields.io/github/v/release/ThT0AltayHR/L-syLauncher?include_prereleases&style=for-the-badge&color=success)](https://github.com/ThT0AltayHR/L-syLauncher/releases)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/ThT0AltayHR/L-syLauncher/push_ci.yml?style=for-the-badge&label=BUILD)](https://github.com/ThT0AltayHR/L-syLauncher/actions)
+[![Downloads](https://img.shields.io/github/downloads/ThT0AltayHR/L-syLauncher/total?style=for-the-badge&color=orange)](https://github.com/ThT0AltayHR/L-syLauncher/releases)
+[![Stars](https://img.shields.io/github/stars/ThT0AltayHR/L-syLauncher?style=for-the-badge&color=yellow)](https://github.com/ThT0AltayHR/L-syLauncher/stargazers)
+[![Website](https://img.shields.io/badge/Web%20Sitesi-lisylauncher.gt.tc-blueviolet?style=for-the-badge)](https://lisylauncher.gt.tc)
 
 ![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-3DDC84?style=flat-square&logo=android&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-Jetpack%20Compose-7F52FF?style=flat-square&logo=kotlin&logoColor=white)
 ![Minecraft](https://img.shields.io/badge/Minecraft-Java%20Edition-62B47A?style=flat-square&logo=minecraft&logoColor=white)
 
+### ⭐ Projeyi beğendiyseniz bir yıldız bırakmayı unutmayın — yeni sürümlerden haberdar olmanın en kolay yolu bu!
+
 </div>
+
+> [!NOTE]
+> **LisyLauncher, resmi olmayan (unofficial) bir değiştirilmiş sürümdür.** Bu proje, [MovTery](https://github.com/MovTery) ve katkıda bulunanlar tarafından geliştirilen açık kaynak **[LisyLauncher2](https://github.com/LisyLauncher/LisyLauncher2)** projesi temel alınarak, [ThT0AltayHR](https://github.com/ThT0AltayHR) ve arkadaşları tarafından geliştirilmektedir. Orijinal LisyLauncher2 projesiyle hiçbir resmi bağlantısı yoktur.
 
 ---
 
-## Tanıtım
+## 📋 İçindekiler
+
+- [Özellikler](#-özellikler)
+- [Ekran Görüntüleri](#-ekran-görüntüleri)
+- [İndirme](#-i̇ndirme)
+- [Derleme (Kaynak Koddan)](#-derleme-kaynak-koddan)
+- [Sürümler Nasıl Yayınlanır (CI/CD)](#-sürümler-nasıl-yayınlanır-cicd)
+- [Lisans ve Kaynak](#-lisans-ve-kaynak)
+- [Geliştirici](#-geliştirici)
+- [Açık Kaynak Kütüphaneler](#-açık-kaynak-kütüphaneler)
+
+---
+
+## ✨ Özellikler
+
+### 🎮 Oynanış
+- **Java Edition, doğrudan Android'de** — kendi Java sürümünüzü (JRE 8/17/21/25 otomatik yönetilir) indirip modlu veya vanilla Minecraft'ı telefon/tablette çalıştırın.
+- **Bedrock tarzı dokunmatik kontroller** — varsayılan olarak 4 yönlü D-pad ve tam dokunmatik etkileşim: dokunmak = saldırı, basılı tutmak = yerleştirme/etkileşim. PvP ve Bedwars için hızlı tepki, uzun basmaya gerek yok.
+- **Kontrolör/dokunmatik kontrol düzenleyici** — kendi kontrol düzeninizi sürükle-bırak ile tasarlayın.
+- **Çoklu render motoru** — OpenGL ES, Vulkan (deneysel), ANGLE, farklı GL4ES varyantları arasında seçim.
+
+### 🧩 Modlar ve İçerik
+- **Forge, Fabric, NeoForge, Quilt, OptiFine** kurulum desteği.
+- **CurseForge / Modrinth** üzerinden mod ve modpack indirme.
+- **Mikrofon gerektiren modlar için otomatik izin akışı** — sesli sohbet/konuşma tanıma kullanan modlar için mikrofon izni otomatik istenir.
+
+### 🎨 Kişiselleştirme
+- **Astra teması** — koyu, aurora renkli, profesyonel görünüm; varsayılan olarak etkin.
+- **İki hesap seçeneği** — orijinal (Microsoft/Xbox) hesap ve istediğiniz ismi girebileceğiniz çevrimdışı (yerel) hesap yan yana; hesap ekleme ve silme tek dokunuşla.
+- Skin görüntüleyici (skinview3d), dosya yöneticisi ve daha fazlası.
+
+### 🌐 Bağlantı ve Entegrasyon
+- **Uygulama içi tarayıcı paneli** — oyun içindeyken Discord, Telegram, YouTube ve Chrome'u uygulamadan hiç çıkmadan, yan panelde açın; oturumunuz (çerezleriniz) kalıcı olarak saklanır.
+- **Sesli sohbet modları için mikrofon köprüsü** *(deneysel)* — Android'in mikrofonunu AAudio üzerinden doğrudan Java modlarına (`javax.sound.sampled`) tanıtan yerel bir köprü; herhangi bir ek mod ayarı gerekmez. Bu özellik yenidir ve cihazdan cihaza farklılık gösterebilir — sorun yaşarsanız web sitemizden bildirin.
+- **[Resmi web sitemiz](https://lisylauncher.gt.tc)** üzerinden duyurular ve hata bildirimi.
+
+### ⚡ Performans
+- **Gömülü JVM/GC optimizasyonları** — her başlatmada otomatik devreye girer (bir ayar değildir): G1GC, `DisableExplicitGC`, `UseStringDeduplication` ile ağır modpack'lerde daha az takılma.
+- Mobil cihazlar için ayarlanmış varsayılan render mesafesi ve FPS sınırı.
+- Güncelleme takibi: bu depodaki GitHub Release'leri izler, kararlı/beta filtreleme ve sürüm geçmişi.
+
+---
+
+## 📸 Ekran Görüntüleri
 
 <div align="center">
 
-<video src="docs/assets/lisylauncher-intro.mp4" poster="docs/assets/intro-poster.jpg" controls muted playsinline width="720">
-  <a href="docs/assets/lisylauncher-intro.mp4">
-    <img src="docs/assets/intro-poster.jpg" alt="LisyLauncher tanıtım videosu (izlemek için tıklayın)" width="720">
-  </a>
-</video>
+**Açılış ekranı** — tam ekran, yatay, sesli oynatılan giriş videosu
 
-<sub>Video oynatılmıyorsa <a href="docs/assets/lisylauncher-intro.mp4">buradan izleyebilirsiniz</a>.</sub>
+![Açılış videosu önizlemesi](docs/screenshots/splash_preview.gif)
 
 </div>
 
----
+> Diğer ekran görüntüleri için `docs/screenshots/` klasörüne kendi cihazınızdan aldığınız görselleri ekleyip buraya bağlantı verebilirsiniz.
 
-## İçindekiler
-
-- [Özellikler](#özellikler)
-- [Kurulum](#kurulum)
-- [Derleme](#derleme)
-- [Otomatik derleme ve yayınlama](#otomatik-derleme-ve-yayınlama)
-- [Lisans](#lisans)
-- [Geliştirici](#geliştirici)
-- [Teşekkürler](#teşekkürler)
+<!--
+![Ana Ekran](docs/screenshots/home.png)
+![Oyun İçi](docs/screenshots/gameplay.png)
+-->
 
 ---
 
-## Özellikler
+## 📥 İndirme
 
-### Oynanış
-- **Java Edition doğrudan Android'de**: Java çalışma zamanı (JRE 8/17/21/25) otomatik yönetilir; modlu veya vanilla Minecraft telefon ve tablette çalışır.
-- **Dokunmatik öncelikli kontroller**: 4 yönlü D-pad ve tam dokunmatik etkileşim. Dokunmak saldırı, basılı tutmak yerleştirme/etkileşimdir.
-- **Kontrol düzenleyici ve oyun kumandası desteği**: Kendi kontrol düzeninizi sürükle-bırak ile tasarlayın.
-- **Çoklu render motoru**: OpenGL ES, Vulkan (deneysel), ANGLE ve farklı GL4ES varyantları.
-- **Çok oyunculu**: Terracotta ile oda tabanlı çok oyunculu bağlantı.
+En güncel kararlı sürümü [**Releases**](https://github.com/ThT0AltayHR/L-syLauncher/releases/latest) sayfasından indirin.
 
-### Modlar ve içerik
-- **Forge, Fabric, NeoForge, Quilt ve OptiFine** kurulum desteği.
-- **CurseForge ve Modrinth** üzerinden mod ve modpack indirme.
-- Mikrofon kullanan modlar için otomatik izin akışı.
-
-### Performans (FPS)
-- **Performans profilleri**: Pil tasarrufu, Dengeli, Maksimum FPS ve Özel. Seçilen profil her başlatmada oyunun video seçeneklerine (FPS sınırı, görüş ve simülasyon mesafesi, parçacıklar, gölgeler, grafik kalitesi) uygulanır.
-- **JVM motoru ayarları**: Çöp toplayıcı seçimi (G1, Parallel, Serial), duraklama hedefi, `System.gc()` çağrılarını yok sayma, dize tekilleştirme ve hafif JIT modu.
-- **Ekran ayarları**: Çözünürlük ölçeği, sürekli performans modu, oyun içi FPS ve bellek göstergesi.
-
-### Arayüz
-- **Yeni yerleşim**: Sol kenar çubuğu ile gezinme, marka başlıklı ana sayfa, hızlı erişim kutucukları ve kategorilere ayrılmış ayarlar (Performans, Oyun, Kontrol, Görünüm, Başlatıcı ve daha fazlası).
-- **Özel SVG simge seti**: Tüm simgeler vektör (SVG) tabanlıdır, emoji kullanılmaz. Kaynak dosyalar [`design/icons`](design/icons) klasöründedir.
-- **Astra teması**: Koyu, kömür rengi yüzeyler ve zümrüt yeşili vurgu; açık tema ve özel renk seçenekleri de mevcuttur.
-- **Modern hata ekranı**: Çökme durumunda günlük paylaşma, yeniden başlatma ve çıkış işlemleri tek ekranda.
-- **17 dil desteği**: Türkçe, English, Español, Português (PT/BR), Italiano, Русский, 日本語, 한국어, 简体中文, 繁體中文, Tiếng Việt, ไทย, Bahasa Indonesia, Filipino, العربية, ئۇيغۇرچە.
-
-### Hesaplar ve araçlar
-- Orijinal (Microsoft) hesap ve çevrimdışı hesap yan yana.
-- Skin görüntüleyici, dosya yöneticisi, günlük görüntüleyici.
-- Güncelleme takibi: Bu depodaki GitHub sürümlerini izler; kararlı/beta filtreleme ve sürüm geçmişi.
-
----
-
-## Kurulum
-
-En güncel sürümü [**Releases**](https://github.com/ThT0AltayHR/LisyLauncher--/releases/latest) sayfasından indirin.
-
-Cihazınızın işlemci mimarisine uygun APK'yı seçin. Emin değilseniz `arm64` sürümü modern telefonların neredeyse tamamında çalışır:
+Cihazınızın işlemci mimarisine uygun APK'yı seçin (emin değilseniz `-arm64` sürümü modern telefonların neredeyse tamamında çalışır):
 
 | Dosya | Mimari |
 |---|---|
@@ -94,73 +103,62 @@ Cihazınızın işlemci mimarisine uygun APK'yı seçin. Emin değilseniz `arm64
 
 ---
 
-## Derleme
+## 🛠 Derleme (Kaynak Koddan)
 
 ```bash
-git clone https://github.com/ThT0AltayHR/LisyLauncher--.git
+git clone https://github.com/ThT0AltayHR/L-syLauncher.git
 cd L-syLauncher
 ./gradlew LisyLauncher:assembleRelease
 ```
 
-**Gereksinimler**
-- Android Studio (güncel sürüm önerilir)
-- Android SDK, en düşük API 26
+**Gereksinimler:**
+- Android Studio (güncel bir sürüm önerilir)
+- Android SDK — Minimum API 26
 - JDK 21
 
 ---
 
-## Otomatik derleme ve yayınlama
+## 🔄 Sürümler Nasıl Yayınlanır (CI/CD)
 
-Depo, GitHub Actions ile tam otomatik derleme ve yayınlama kullanır. Ek bir kurulum gerekmez.
+Bu depo GitHub Actions ile **tam otomatik** derleme ve yayınlama kullanır:
 
-1. **Derleme (`build.yml`)**: Her push'ta 5 mimari (`all`, `arm`, `arm64`, `x86`, `x86_64`) için ayrı ayrı APK derlenir.
-2. **İmzalama**: Release APK'ları otomatik olarak imzalanır.
-3. **Yayınlama (`release_ci.yml`)**: Bir GitHub sürümü yayınlandığında tüm mimarilerin APK'ları toplanır ve doğrudan o sürüme eklenir.
+1. **Derleme (`build.yml`)** — her push'ta ve her yayınlanan Release'te, 5 farklı mimari (`all`, `arm`, `arm64`, `x86`, `x86_64`) için ayrı ayrı APK derlenir.
+2. **İmzalama** — Release derlemeleri, deponun `Settings → Secrets and variables → Actions` bölümünde tanımlı `STORE_PASSWORD` ve `KEY_PASSWORD` gizli anahtarlarıyla otomatik imzalanır. **Bu anahtarlar tanımlı değilse derleme artık başarısız olur ve net bir hata mesajı verir** — böylece imzasız/bozuk bir APK'nın sessizce yayınlanıp cihazlarda *"Paket geçersiz göründüğünden uygulama yüklenemedi"* hatasına yol açması engellenmiş olur.
+3. **Yayınlama (`release_ci.yml`)** — bir GitHub Release "published" durumuna alındığında tetiklenir, tüm mimarilerin APK'larını toplar ve doğrudan o Release'e ekler.
 
----
-
-## Lisans
-
-LisyLauncher, **GNU Genel Kamu Lisansı sürüm 3 (GPLv3)** ile lisanslanmıştır. Lisansın tam metni [LICENSE](LICENSE) dosyasındadır.
-
-```text
-LisyLauncher
-Copyright (C) 2026 AltayHR ve katkıda bulunanlar
-
-Bu program özgür yazılımdır: Free Software Foundation tarafından yayımlanan
-GNU Genel Kamu Lisansı'nın 3. sürümünün ya da (tercihinize bağlı olarak)
-daha sonraki bir sürümünün koşulları altında yeniden dağıtabilir ve/veya
-değiştirebilirsiniz.
-
-Bu program yararlı olması umuduyla dağıtılmaktadır, ancak HİÇBİR GARANTİ
-VERİLMEMEKTEDİR; satılabilirlik ya da belirli bir amaca uygunluk garantisi
-dahil hiçbir zımni garanti sunulmaz. Ayrıntılar için GNU Genel Kamu
-Lisansı'na bakın.
-
-Bu programla birlikte GNU Genel Kamu Lisansı'nın bir kopyasını almış
-olmalısınız. Almadıysanız <https://www.gnu.org/licenses/gpl-3.0.txt>
-adresine bakın.
-```
-
-**Kaynak ve atıflar.** LisyLauncher, GPLv3 ile lisanslı **[ZalithLauncher2](https://github.com/ZalithLauncher/ZalithLauncher2)** (© MovTery ve katkıda bulunanlar) temel alınarak geliştirilmiştir; başlatma altyapısı PojavLauncher'a dayanır. Bu projelerin telif hakkı bildirimleri ve lisans metinleri korunmuştur. LisyLauncher, orijinal ZalithLauncher2 projesiyle resmi bir bağlantıya sahip değildir.
+Yeni bir depoda otomatik/imzalı derleme için gerekli tek adım: `STORE_PASSWORD` ve `KEY_PASSWORD` gizli anahtarlarını repo ayarlarına eklemek (keystore dosyası zaten kaynak kodda mevcut).
 
 ---
 
-## Geliştirici
+## 📜 Lisans ve Kaynak
 
-- **AltayHR** ([@ThT0AltayHR](https://github.com/ThT0AltayHR)): LisyLauncher ana geliştiricisi
-- Katkıda bulunanlar: [GitHub katkıda bulunanlar sayfası](https://github.com/ThT0AltayHR/LisyLauncher--/graphs/contributors)
+Bu proje, üzerine inşa edildiği LisyLauncher2 ile aynı şekilde **[GNU General Public License v3.0 (GPLv3)](LICENSE)** ile lisanslanmıştır. Bunun tek bir sebebi var: LisyLauncher2 zaten GPLv3 ile lisanslanmış, ve GPLv3'ün kendisi türev/çatal (fork) projelerin de GPLv3 (veya uyumlu bir lisans) ile dağıtılmasını **zorunlu kılıyor** — yani bu proje başka bir lisansla dağıtılamaz.
+
+GPLv3'ün 7. maddesi uyarınca LisyLauncher2'nin de uyduğu ek şartlar geçerlidir:
+- Değiştirilmiş sürümler, orijinal "LisyLauncher"/"ZL" adını veya karıştırılmaya yol açacak benzer bir adı kullanamaz — bu yüzden bu proje **LisyLauncher** adını taşımaktadır.
+- Değiştirilmiş sürümler, ana arayüzde bu sürümün "resmi olmayan bir değiştirilmiş sürüm" olduğunu açıkça belirtmelidir (bkz. Ayarlar → Hakkında ekranı).
+- Telif hakkı bildirimleri kaynak kod içinde korunmalıdır (korunmuştur).
+
+**Not:** GPLv3, kaynak kodun herkes tarafından çatallanmasını/taşınmasını (port edilmesini) yasaklayan bir maddeye izin vermez; bu yüzden LICENSE dosyasının kendisini bunu yasaklayacak şekilde değiştiremeyiz — böyle bir madde GPLv3 ile çelişir ve hukuken geçersiz olur. Bunun yerine açıkça, kararlılıkla belirtiyoruz: **LisyLauncher, ThT0AltayHR tarafından uzun bir sürede özenle geliştirilmiştir.** Kodu kendi cihazınız için değiştirmekte GPLv3 kapsamında elbette özgürsünüz — ama **bu emeği izinsiz kendi ürününüzmüş gibi başka bir isimle yeniden yayınlamak, satmak veya sahiplenmek** açıkça istenmeyen ve etik olmayan bir kullanımdır.
 
 ---
 
-## Teşekkürler
+## 👤 Geliştirici
 
-- **[MovTery](https://github.com/MovTery)** ve [ZalithLauncher2 katkıda bulunanları](https://github.com/ZalithLauncher/ZalithLauncher2/graphs/contributors): Çekirdek başlatıcı altyapısı
-- **[Phosphor Icons](https://github.com/phosphor-icons/core)** (MIT): Simge setinin temeli, lisans metni [`design/icons/LICENSE.txt`](design/icons/LICENSE.txt) dosyasındadır
-- Kullanılan tüm açık kaynak kütüphanelerin ve lisanslarının güncel listesi uygulama içinde **Ayarlar → Hakkında** ekranında bulunur.
+- **[ThT0AltayHR](https://github.com/ThT0AltayHR)** — LisyLauncher'ın geliştiricisi
+- Katkıda bulunan arkadaşlar için: [GitHub katkıda bulunanlar sayfası](https://github.com/ThT0AltayHR/L-syLauncher/graphs/contributors)
+- Orijinal proje ve çekirdek launcher motoru: **[MovTery](https://github.com/MovTery)** ve [LisyLauncher2 katkıda bulunanları](https://github.com/LisyLauncher/LisyLauncher2/graphs/contributors)
+
+---
+
+## 📦 Açık Kaynak Kütüphaneler
+
+Bu yazılımın kullandığı tüm açık kaynak kütüphanelerin ve lisanslarının güncel listesi, uygulama içinde **Ayarlar → Hakkında** ekranında bulunur.
 
 <div align="center">
 
-**LisyLauncher** · [AltayHR](https://github.com/ThT0AltayHR) tarafından geliştirilmektedir
+**Made with ❤️ by [ThT0AltayHR](https://github.com/ThT0AltayHR) and friends**
+
+*Minecraft ve Xbox, Microsoft Corporation'ın ticari markalarıdır. LisyLauncher, Microsoft veya Mojang Studios ile resmi olarak bağlantılı değildir.*
 
 </div>

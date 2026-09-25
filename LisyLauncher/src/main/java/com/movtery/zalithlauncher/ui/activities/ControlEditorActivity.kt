@@ -36,7 +36,7 @@ import com.movtery.zalithlauncher.setting.AllSettings
 import com.movtery.zalithlauncher.ui.base.BaseAppCompatActivity
 import com.movtery.zalithlauncher.ui.screens.content.elements.Background
 import com.movtery.zalithlauncher.ui.screens.main.control_editor.ControlEditor
-import com.movtery.zalithlauncher.ui.theme.ZalithLauncherTheme
+import com.movtery.zalithlauncher.ui.theme.LisyLauncherTheme
 import com.movtery.zalithlauncher.ui.theme.backgroundColor
 import com.movtery.zalithlauncher.ui.theme.onBackgroundColor
 import com.movtery.zalithlauncher.viewmodel.BackgroundViewModel
@@ -85,7 +85,7 @@ class ControlEditorActivity : BaseAppCompatActivity() {
         })
 
         setContent {
-            ZalithLauncherTheme(
+            LisyLauncherTheme(
                 backgroundViewModel = backgroundViewModel
             ) {
                 Surface(

@@ -30,13 +30,11 @@ import com.movtery.zalithlauncher.game.version.installed.GraphicsApi
 import com.movtery.zalithlauncher.setting.enums.AppLanguage
 import com.movtery.zalithlauncher.setting.enums.BackgroundBlur
 import com.movtery.zalithlauncher.setting.enums.DarkMode
-import com.movtery.zalithlauncher.setting.enums.GcType
 import com.movtery.zalithlauncher.setting.enums.GamepadInputMode
 import com.movtery.zalithlauncher.setting.enums.GestureActionType
 import com.movtery.zalithlauncher.setting.enums.HomePageType
 import com.movtery.zalithlauncher.setting.enums.MirrorSourceType
 import com.movtery.zalithlauncher.setting.enums.MouseControlMode
-import com.movtery.zalithlauncher.setting.enums.PerformancePreset
 import com.movtery.zalithlauncher.setting.enums.ResolutionRule
 import com.movtery.zalithlauncher.ui.control.HotbarRule
 import com.movtery.zalithlauncher.ui.control.gamepad.JoystickMode
@@ -112,67 +110,6 @@ object AllSettings : SettingsRegistry() {
      * 启用着色器日志输出
      */
     val dumpShaders = boolSetting("dumpShaders", false)
-
-    //Performance
-    /**
-     * Performans profili (oyun içi video ayarlarını başlatırken uygular)
-     */
-    val perfPreset = enumSetting("perfPreset", PerformancePreset.OFF)
-
-    /**
-     * Özel profil: FPS sınırı (260 = sınırsız)
-     */
-    val perfMaxFps = intSetting("perfMaxFps", 120, 30..260)
-
-    /**
-     * Özel profil: görüş mesafesi (chunk)
-     */
-    val perfRenderDistance = intSetting("perfRenderDistance", 6, 2..32)
-
-    /**
-     * Özel profil: simülasyon mesafesi (chunk)
-     */
-    val perfSimulationDistance = intSetting("perfSimulationDistance", 5, 5..32)
-
-    /**
-     * Özel profil: en aza indirilmiş parçacıklar
-     */
-    val perfMinimalParticles = boolSetting("perfMinimalParticles", true)
-
-    /**
-     * Özel profil: varlık gölgelerini kapat
-     */
-    val perfDisableEntityShadows = boolSetting("perfDisableEntityShadows", true)
-
-    /**
-     * Özel profil: hızlı grafikler
-     */
-    val perfFastGraphics = boolSetting("perfFastGraphics", true)
-
-    /**
-     * JVM çöp toplayıcı türü
-     */
-    val perfGcType = enumSetting("perfGcType", GcType.G1)
-
-    /**
-     * G1 GC duraklama hedefi (ms)
-     */
-    val perfGcPauseMillis = intSetting("perfGcPauseMillis", 100, 20..500)
-
-    /**
-     * System.gc() çağrılarını yok say
-     */
-    val perfDisableExplicitGc = boolSetting("perfDisableExplicitGc", true)
-
-    /**
-     * Dize tekilleştirme (yalnızca G1)
-     */
-    val perfStringDedup = boolSetting("perfStringDedup", true)
-
-    /**
-     * Hafif JIT (yalnızca C1 derleyicisi)
-     */
-    val perfLightweightJit = boolSetting("perfLightweightJit", false)
 
     //Game
     /**

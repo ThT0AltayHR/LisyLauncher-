@@ -18,13 +18,10 @@
 
 package com.movtery.zalithlauncher.ui.screens.content
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -35,23 +32,18 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
@@ -71,8 +63,6 @@ import com.movtery.zalithlauncher.ui.screens.content.settings.GameSettingsScreen
 import com.movtery.zalithlauncher.ui.screens.content.settings.GamepadSettingsScreen
 import com.movtery.zalithlauncher.ui.screens.content.settings.JavaManageScreen
 import com.movtery.zalithlauncher.ui.screens.content.settings.LauncherSettingsScreen
-import com.movtery.zalithlauncher.ui.screens.content.settings.LauncherSettingsSection
-import com.movtery.zalithlauncher.ui.screens.content.settings.PerformanceSettingsScreen
 import com.movtery.zalithlauncher.ui.screens.content.settings.RendererSettingsScreen
 import com.movtery.zalithlauncher.ui.screens.navigateOnce
 import com.movtery.zalithlauncher.ui.screens.onBack
@@ -124,15 +114,13 @@ fun SettingsScreen(
 }
 
 private val settingItems = listOf(
-    CategoryItem(NormalNavKey.Settings.Performance, { CategoryIcon(R.drawable.ic_gauge_filled, R.string.settings_tab_performance) }, R.string.settings_tab_performance),
     CategoryItem(NormalNavKey.Settings.Renderer, { CategoryIcon(R.drawable.ic_video_settings, R.string.settings_tab_renderer) }, R.string.settings_tab_renderer),
     CategoryItem(NormalNavKey.Settings.Game, { CategoryIcon(R.drawable.ic_rocket_launch_filled, R.string.settings_tab_game) }, R.string.settings_tab_game),
     CategoryItem(NormalNavKey.Settings.Control, { CategoryIcon(R.drawable.ic_videogame_asset_outlined, R.string.settings_tab_control) }, R.string.settings_tab_control),
     CategoryItem(NormalNavKey.Settings.Gamepad, { CategoryIcon(R.drawable.ic_sports_esports_outlined, R.string.settings_tab_gamepad) }, R.string.settings_tab_gamepad),
-    CategoryItem(NormalNavKey.Settings.Appearance, { CategoryIcon(R.drawable.ic_palette_filled, R.string.settings_tab_appearance) }, R.string.settings_tab_appearance),
     CategoryItem(NormalNavKey.Settings.Launcher, { CategoryIcon(R.drawable.ic_setting_launcher, R.string.settings_tab_launcher) }, R.string.settings_tab_launcher),
-    CategoryItem(NormalNavKey.Settings.JavaManager, { CategoryIcon(R.drawable.ic_coffee_filled, R.string.settings_tab_java_manage) }, R.string.settings_tab_java_manage, division = true),
-    CategoryItem(NormalNavKey.Settings.ControlManager, { CategoryIcon(R.drawable.ic_dashboard_outlined, R.string.settings_tab_control_manage) }, R.string.settings_tab_control_manage),
+    CategoryItem(NormalNavKey.Settings.JavaManager, { CategoryIcon(R.drawable.ic_java, R.string.settings_tab_java_manage) }, R.string.settings_tab_java_manage, division = true),
+    CategoryItem(NormalNavKey.Settings.ControlManager, { CategoryIcon(R.drawable.ic_videogame_asset_outlined, R.string.settings_tab_control_manage) }, R.string.settings_tab_control_manage),
     CategoryItem(NormalNavKey.Settings.AboutInfo, { CategoryIcon(R.drawable.ic_info_outlined, R.string.settings_tab_info_about) }, R.string.settings_tab_info_about, division = true)
 )
 
@@ -153,74 +141,43 @@ private fun TabMenu(
     Column(
         modifier = modifier
             .fadeEdge(scrollState)
-            .width(164.dp)
-            .padding(start = 8.dp, end = 4.dp)
+            .width(IntrinsicSize.Min)
+            .padding(start = 8.dp)
             .offset { IntOffset(x = xOffset.roundToPx(), y = 0) }
             .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(12.dp))
         settingItems.forEach { item ->
             if (item.division) {
                 HorizontalDivider(
                     modifier = Modifier
-                        .padding(vertical = 8.dp, horizontal = 12.dp)
+                        .padding(vertical = 12.dp)
+                        .fillMaxWidth(0.4f)
                         .alpha(0.4f),
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
 
-            SettingsTabItem(
+            NavigationRailItem(
                 selected = settingsScreenKey == item.key,
-                icon = item.icon,
-                textRes = item.textRes,
                 onClick = {
                     navigateTo(item.key)
+                },
+                icon = {
+                    item.icon()
+                },
+                label = {
+                    Text(
+                        modifier = Modifier.basicMarquee(iterations = Int.MAX_VALUE),
+                        text = stringResource(item.textRes),
+                        maxLines = 1,
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
             )
-        }
-        Spacer(modifier = Modifier.height(12.dp))
-    }
-}
 
-@Composable
-private fun SettingsTabItem(
-    selected: Boolean,
-    icon: @Composable () -> Unit,
-    textRes: Int,
-    onClick: () -> Unit
-) {
-    val scheme = MaterialTheme.colorScheme
-    val containerColor by animateColorAsState(
-        targetValue = if (selected) scheme.primary.copy(alpha = 0.16f) else Color.Transparent,
-        label = "SettingsTabContainer"
-    )
-    val contentColor by animateColorAsState(
-        targetValue = if (selected) scheme.primary else scheme.onSurfaceVariant,
-        label = "SettingsTabContent"
-    )
-
-    CompositionLocalProvider(LocalContentColor provides contentColor) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(14.dp))
-                .background(containerColor)
-                .clickable(role = Role.Tab, onClick = onClick)
-                .padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            icon()
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .basicMarquee(iterations = Int.MAX_VALUE),
-                text = stringResource(textRes),
-                color = contentColor,
-                maxLines = 1,
-                style = MaterialTheme.typography.labelLarge
-            )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
@@ -253,9 +210,6 @@ private fun NavigationUI(
             transitionSpec = rememberTransitionSpec(),
             popTransitionSpec = rememberTransitionSpec(),
             entryProvider = entryProvider {
-                entry<NormalNavKey.Settings.Performance> {
-                    PerformanceSettingsScreen(key, settingsScreenKey, mainScreenKey, eventViewModel)
-                }
                 entry<NormalNavKey.Settings.Renderer> {
                     RendererSettingsScreen(key, settingsScreenKey, mainScreenKey, eventViewModel)
                 }
@@ -268,17 +222,6 @@ private fun NavigationUI(
                 entry<NormalNavKey.Settings.Gamepad> {
                     GamepadSettingsScreen(key, settingsScreenKey, mainScreenKey, eventViewModel)
                 }
-                entry<NormalNavKey.Settings.Appearance> {
-                    LauncherSettingsScreen(
-                        key = key,
-                        settingsScreenKey = settingsScreenKey,
-                        mainScreenKey = mainScreenKey,
-                        eventViewModel = eventViewModel,
-                        toHomePageEditor = toHomePageEditor,
-                        submitError = submitError,
-                        section = LauncherSettingsSection.Appearance
-                    )
-                }
                 entry<NormalNavKey.Settings.Launcher> {
                     LauncherSettingsScreen(
                         key = key,
@@ -287,7 +230,6 @@ private fun NavigationUI(
                         eventViewModel = eventViewModel,
                         toHomePageEditor = toHomePageEditor,
                         submitError = submitError,
-                        section = LauncherSettingsSection.Launcher
                     )
                 }
                 entry<NormalNavKey.Settings.JavaManager> {

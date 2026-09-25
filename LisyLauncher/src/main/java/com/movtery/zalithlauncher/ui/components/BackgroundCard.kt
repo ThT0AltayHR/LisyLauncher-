@@ -19,8 +19,6 @@
 package com.movtery.zalithlauncher.ui.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.ui.unit.dp
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -56,7 +54,7 @@ fun BackgroundCard(
     ),
     elevation: CardElevation = CardDefaults.cardElevation(),
     blur: Int = AllSettings.backgroundBlur.state,
-    border: BorderStroke? = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+    border: BorderStroke? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
@@ -89,7 +87,7 @@ fun BackgroundCard(
     ),
     elevation: CardElevation = CardDefaults.cardElevation(),
     blur: Int = AllSettings.backgroundBlur.state,
-    border: BorderStroke? = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+    border: BorderStroke? = null,
     onClick: () -> Unit,
     enabled: Boolean = true,
     content: @Composable @UiComposable ColumnScope.() -> Unit

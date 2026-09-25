@@ -170,6 +170,22 @@
     <string name="unpack_screen_cacio">Portable GUI backend for OpenJDK</string>
     <string name="unpack_screen_lwjgl">Lightweight Java Game Library (required by Minecraft)</string>
     <string name="unpack_screen_launcher">Essential launcher components</string>
+    <string name="unpack_screen_micbridge">Microphone support for voice chat mods</string>
+    <string name="unpack_screen_skins">Built-in skin collection</string>
+    <string name="unpack_screen_menu_intro">Menu intro pack (FancyMenu)</string>
+    <string name="menu_intro_install">Modern Giriş Ekranını Yükle</string>
+    <string name="menu_intro_install_desc">FancyMenu ve Drippy Loading Screen modları kurulu olmalı. Bu, o modların ayar dosyalarını bu sürüme kopyalar.</string>
+    <string name="menu_intro_installed">Yüklendi ✓ FancyMenu ve Drippy Loading Screen modlarını da kurmayı unutmayın.</string>
+    <string name="social_xbox">Xbox</string>
+    <string name="serverlist_title">Sunucu Ara</string>
+    <string name="wardrobe_title">Gardırop</string>
+    <string name="wardrobe_apply">Skin\'i Uygula</string>
+    <string name="wardrobe_loading">Skinler yükleniyor…</string>
+    <string name="serverlist_search_hint">Sunucu adı veya IP ara…</string>
+    <string name="serverlist_filter_version">Sürüm</string>
+    <string name="serverlist_filter_gamemode">Oyun Modu</string>
+    <string name="serverlist_filter_loader">Mod Yükleyicisi</string>
+    <string name="serverlist_visit">Web Sitesini Aç</string>
     <string name="unpack_screen_jna">Enables Minecraft to directly call low-level OS functions</string>
     <!-- Main Menu -->
     <string name="main_launch_game">Launch</string>
@@ -1464,41 +1480,4 @@
     <string name="fm_property_folders">Folders</string>
     <string name="fm_calculating">Calculating…</string>
     <string name="fm_name_conflict">Name conflicts with an existing entry</string>
-    <!-- LisyLauncher: performance settings and new UI -->
-    <string name="settings_tab_performance">Performance</string>
-    <string name="settings_tab_appearance">Appearance</string>
-    <string name="home_hero_tagline">Minecraft: Java Edition, built for mobile</string>
-    <string name="perf_banner_title">Performance &amp; FPS</string>
-    <string name="perf_banner_summary">Tune frame rate, memory and the Java engine for your device.</string>
-    <string name="perf_profile_title">Performance profile</string>
-    <string name="perf_profile_summary">Applies video options to the game every time it starts. Choose Custom to set each value yourself.</string>
-    <string name="perf_profile_off">Off</string>
-    <string name="perf_profile_battery">Battery saver</string>
-    <string name="perf_profile_balanced">Balanced</string>
-    <string name="perf_profile_max_fps">Max FPS</string>
-    <string name="perf_max_fps_title">FPS limit</string>
-    <string name="perf_max_fps_summary">Caps the frame rate. 260 means unlimited.</string>
-    <string name="perf_render_distance_title">Render distance</string>
-    <string name="perf_render_distance_summary">Chunks drawn around you. Lower values give the biggest FPS gain.</string>
-    <string name="perf_simulation_distance_title">Simulation distance</string>
-    <string name="perf_simulation_distance_summary">Chunks where entities and blocks are updated (Minecraft 1.18+).</string>
-    <string name="perf_particles_title">Minimal particles</string>
-    <string name="perf_particles_summary">Reduces particle effects to save GPU time.</string>
-    <string name="perf_entity_shadows_title">Disable entity shadows</string>
-    <string name="perf_entity_shadows_summary">Skips the shadow drawn under mobs and players.</string>
-    <string name="perf_fast_graphics_title">Fast graphics</string>
-    <string name="perf_fast_graphics_summary">Uses simpler leaves, water and blocks.</string>
-    <string name="perf_gc_title">Garbage collector</string>
-    <string name="perf_gc_summary">G1 suits most devices. Parallel can raise FPS on strong CPUs. Serial uses the least memory.</string>
-    <string name="perf_gc_g1">G1 (recommended)</string>
-    <string name="perf_gc_pause_title">GC pause target</string>
-    <string name="perf_gc_pause_summary">Shorter targets mean fewer stutters but more CPU use. G1 only.</string>
-    <string name="perf_disable_explicit_gc_title">Ignore System.gc() calls</string>
-    <string name="perf_disable_explicit_gc_summary">Stops mods from forcing full memory sweeps that freeze the game.</string>
-    <string name="perf_string_dedup_title">String deduplication</string>
-    <string name="perf_string_dedup_summary">Saves memory in large modpacks. G1 only.</string>
-    <string name="perf_light_jit_title">Lightweight JIT (C1 only)</string>
-    <string name="perf_light_jit_summary">Uses less CPU while the game warms up. May lower peak FPS on fast devices.</string>
-    <string name="perf_gc_parallel" translatable="false">Parallel</string>
-    <string name="perf_gc_serial" translatable="false">Serial</string>
 </resources>

@@ -13,12 +13,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Surface
@@ -34,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -219,21 +216,21 @@ private fun FakeJoystick(
             ) {
                 AreaButton(
                     modifier = Modifier.fillMaxHeight().weight(1f),
-                    iconRes = R.drawable.ic_arrow_up_left,
+                    text = "↖",
                     isSelected = selectedArea == JoystickArea.NorthWest,
                     position = CardPosition.TopStart,
                     onClick = { onAreaSelected(JoystickArea.NorthWest) }
                 )
                 AreaButton(
                     modifier = Modifier.fillMaxHeight().weight(1f),
-                    iconRes = R.drawable.ic_arrow_upward,
+                    text = "↑",
                     isSelected = selectedArea == JoystickArea.North,
                     position = CardPosition.Middle,
                     onClick = { onAreaSelected(JoystickArea.North) }
                 )
                 AreaButton(
                     modifier = Modifier.fillMaxHeight().weight(1f),
-                    iconRes = R.drawable.ic_arrow_up_right,
+                    text = "↗",
                     isSelected = selectedArea == JoystickArea.NorthEast,
                     position = CardPosition.TopEnd,
                     onClick = { onAreaSelected(JoystickArea.NorthEast) }
@@ -247,7 +244,7 @@ private fun FakeJoystick(
             ) {
                 AreaButton(
                     modifier = Modifier.fillMaxHeight().weight(1f),
-                    iconRes = R.drawable.ic_arrow_back,
+                    text = "←",
                     isSelected = selectedArea == JoystickArea.West,
                     position = CardPosition.Middle,
                     onClick = { onAreaSelected(JoystickArea.West) }
@@ -257,7 +254,7 @@ private fun FakeJoystick(
 
                 AreaButton(
                     modifier = Modifier.fillMaxHeight().weight(1f),
-                    iconRes = R.drawable.ic_arrow_right,
+                    text = "→",
                     isSelected = selectedArea == JoystickArea.East,
                     position = CardPosition.Middle,
                     onClick = { onAreaSelected(JoystickArea.East) }
@@ -271,21 +268,21 @@ private fun FakeJoystick(
             ) {
                 AreaButton(
                     modifier = Modifier.fillMaxHeight().weight(1f),
-                    iconRes = R.drawable.ic_arrow_down_left,
+                    text = "↙",
                     isSelected = selectedArea == JoystickArea.SouthWest,
                     position = CardPosition.BottomStart,
                     onClick = { onAreaSelected(JoystickArea.SouthWest) }
                 )
                 AreaButton(
                     modifier = Modifier.fillMaxHeight().weight(1f),
-                    iconRes = R.drawable.ic_arrow_downward,
+                    text = "↓",
                     isSelected = selectedArea == JoystickArea.South,
                     position = CardPosition.Middle,
                     onClick = { onAreaSelected(JoystickArea.South) }
                 )
                 AreaButton(
                     modifier = Modifier.fillMaxHeight().weight(1f),
-                    iconRes = R.drawable.ic_arrow_down_right,
+                    text = "↘",
                     isSelected = selectedArea == JoystickArea.SouthEast,
                     position = CardPosition.BottomEnd,
                     onClick = { onAreaSelected(JoystickArea.SouthEast) }
@@ -298,8 +295,7 @@ private fun FakeJoystick(
 @Composable
 private fun AreaButton(
     modifier: Modifier = Modifier,
-    text: String? = null,
-    iconRes: Int? = null,
+    text: String,
     isSelected: Boolean,
     position: CardPosition,
     onClick: () -> Unit
@@ -334,14 +330,11 @@ private fun AreaButton(
             },
             contentAlignment = Alignment.Center
         ) {
-            when {
-                text != null -> Text(text)
-                iconRes != null -> Icon(
-                    modifier = Modifier.size(20.dp),
-                    painter = painterResource(iconRes),
-                    contentDescription = null
-                )
-            }
+            Text(
+                text = text,
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

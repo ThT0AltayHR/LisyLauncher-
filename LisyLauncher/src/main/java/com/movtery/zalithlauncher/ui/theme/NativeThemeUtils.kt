@@ -203,7 +203,7 @@ private fun getSeedColor(context: Context, darkTheme: Boolean): Int {
 
 private fun getPredefinedSeedColor(theme: ColorThemeType, darkTheme: Boolean): Int {
     return when (theme) {
-        ColorThemeType.ASTRA -> if (darkTheme) 0xFF4ADE80.toInt() else 0xFF0F7A3E.toInt()
+        ColorThemeType.ASTRA -> 0xFF3DD9C4.toInt()
         ColorThemeType.EMBERMIRE -> if (darkTheme) 0xFFFFB598.toInt() else 0xFFA63A17.toInt()
         ColorThemeType.VELVET_ROSE -> if (darkTheme) 0xFFF9B2D2.toInt() else 0xFF723D57.toInt()
         ColorThemeType.MISTWAVE -> if (darkTheme) 0xFFCEF3F9.toInt() else 0xFF426469.toInt()

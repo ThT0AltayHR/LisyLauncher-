@@ -19,10 +19,6 @@
 package com.movtery.zalithlauncher.ui.screens.content
 
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,13 +30,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -61,9 +55,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -72,8 +64,6 @@ import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -117,6 +107,20 @@ fun LauncherScreen(
         Row(
             modifier = Modifier.fillMaxSize()
         ) {
+            CompositionLocalProvider(
+                LocalUriHandler provides object : UriHandler {
+                    override fun openUri(uri: String) {
+                        onOpenLink(uri)
+                    }
+                }
+            ) {
+                ContentMenu(
+                    modifier = Modifier.weight(7f),
+                    isVisible = isVisible,
+                    onHomePageEvent = onHomePageEvent
+                )
+            }
+
             val toAccountManageScreen: () -> Unit = {
                 backStackViewModel.mainScreen.navigateTo(
                     screenKey = NormalNavKey.AccountManager(FirstLoginMenu.NONE)
@@ -132,34 +136,6 @@ fun LauncherScreen(
                 VersionsManager.currentVersion.value?.let { version ->
                     navigateToVersions(version)
                 }
-            }
-            val toDownloadScreen: () -> Unit = {
-                backStackViewModel.navigateToDownload()
-            }
-            val toPerformanceSettings: () -> Unit = {
-                backStackViewModel.settingsScreen.navigateOnce(NormalNavKey.Settings.Performance)
-                backStackViewModel.mainScreen.removeAndNavigateTo(
-                    removes = backStackViewModel.clearBeforeNavKeys,
-                    screenKey = backStackViewModel.settingsScreen
-                )
-            }
-
-            CompositionLocalProvider(
-                LocalUriHandler provides object : UriHandler {
-                    override fun openUri(uri: String) {
-                        onOpenLink(uri)
-                    }
-                }
-            ) {
-                ContentMenu(
-                    modifier = Modifier.weight(7f),
-                    isVisible = isVisible,
-                    onHomePageEvent = onHomePageEvent,
-                    onOpenVersions = toVersionManageScreen,
-                    onOpenAccounts = toAccountManageScreen,
-                    onOpenDownload = toDownloadScreen,
-                    onOpenPerformance = toPerformanceSettings
-                )
             }
 
             RightMenu(
@@ -182,10 +158,6 @@ fun LauncherScreen(
 private fun ContentMenu(
     isVisible: Boolean,
     onHomePageEvent: (MarkdownBlock.Button.Event) -> Unit,
-    onOpenVersions: () -> Unit,
-    onOpenAccounts: () -> Unit,
-    onOpenDownload: () -> Unit,
-    onOpenPerformance: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val yOffset by swapAnimateDpAsState(
@@ -203,16 +175,6 @@ private fun ContentMenu(
             .offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
         contentPadding = PaddingValues(all = 12.dp)
     ) {
-        item(key = "lisy_hero_banner") {
-            HeroBanner(
-                modifier = Modifier.padding(bottom = 12.dp),
-                onOpenVersions = onOpenVersions,
-                onOpenAccounts = onOpenAccounts,
-                onOpenDownload = onOpenDownload,
-                onOpenPerformance = onOpenPerformance
-            )
-        }
-
         if (BuildConfig.DEBUG) {
             item {
                 //debug版本关不掉的警告，防止有人把测试版当正式版用 XD
@@ -419,12 +381,6 @@ private fun RightMenuContent(
                 onLaunchGame(null)
             },
             {
-                Icon(
-                    modifier = Modifier.size(20.dp),
-                    painter = painterResource(R.drawable.ic_play_arrow_filled),
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.width(8.dp))
                 MarqueeText(text = stringResource(R.string.main_launch_game))
             }
         )
@@ -459,8 +415,6 @@ private fun RightMenu(
         ) { innerModifier, onClick, text ->
             ScalingActionButton(
                 modifier = innerModifier,
-                shape = RoundedCornerShape(16.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 14.dp),
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 1.dp),
                 onClick = onClick,
                 content = text
@@ -539,124 +493,5 @@ private fun VersionManagerLayout(
                 }
             }
         }
-    }
-}
-
-/**
- * 主页顶部的品牌横幅：LisyLauncher 标志与常用入口
- */
-@Composable
-private fun HeroBanner(
-    onOpenVersions: () -> Unit,
-    onOpenAccounts: () -> Unit,
-    onOpenDownload: () -> Unit,
-    onOpenPerformance: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val scheme = MaterialTheme.colorScheme
-    val shape = RoundedCornerShape(20.dp)
-
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(shape)
-            .background(
-                Brush.linearGradient(
-                    colors = listOf(
-                        scheme.primaryContainer.copy(alpha = 0.55f),
-                        scheme.surfaceContainerHigh,
-                        scheme.tertiaryContainer.copy(alpha = 0.25f)
-                    )
-                )
-            )
-            .border(width = 1.dp, color = scheme.outlineVariant.copy(alpha = 0.6f), shape = shape)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .heightIn(max = 130.dp),
-                painter = painterResource(R.drawable.img_lisy_logo),
-                contentDescription = BuildKeys.LAUNCHER_NAME,
-                contentScale = ContentScale.Fit
-            )
-
-            Text(
-                text = stringResource(R.string.home_hero_tagline),
-                style = MaterialTheme.typography.bodySmall,
-                color = scheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                HeroAction(
-                    modifier = Modifier.weight(1f),
-                    iconRes = R.drawable.ic_stack_filled,
-                    label = stringResource(R.string.page_title_version_list),
-                    onClick = onOpenVersions
-                )
-                HeroAction(
-                    modifier = Modifier.weight(1f),
-                    iconRes = R.drawable.ic_user_filled,
-                    label = stringResource(R.string.page_title_account_list),
-                    onClick = onOpenAccounts
-                )
-                HeroAction(
-                    modifier = Modifier.weight(1f),
-                    iconRes = R.drawable.ic_download_2_filled,
-                    label = stringResource(R.string.generic_download),
-                    onClick = onOpenDownload
-                )
-                HeroAction(
-                    modifier = Modifier.weight(1f),
-                    iconRes = R.drawable.ic_gauge_filled,
-                    label = stringResource(R.string.settings_tab_performance),
-                    onClick = onOpenPerformance
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun HeroAction(
-    iconRes: Int,
-    label: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val scheme = MaterialTheme.colorScheme
-
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(14.dp))
-            .background(scheme.surface.copy(alpha = 0.45f))
-            .clickable(role = Role.Button, onClick = onClick)
-            .padding(vertical = 10.dp, horizontal = 6.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Icon(
-            modifier = Modifier.size(22.dp),
-            painter = painterResource(iconRes),
-            contentDescription = null,
-            tint = scheme.primary
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = scheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
     }
 }

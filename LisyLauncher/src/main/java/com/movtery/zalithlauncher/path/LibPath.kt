@@ -33,6 +33,12 @@ class LibPath {
 
         @JvmField val JNA = File(DIR_JNA, "jna")
 
+        @JvmField val MIC_BRIDGE = File(File(DIR_COMPONENTS, "micbridge"), "micbridge.jar")
+
+        @JvmField val BUILTIN_SKINS_DIR = File(DIR_COMPONENTS, "skins")
+
+        @JvmField val MENU_INTRO_DIR = File(DIR_COMPONENTS, "lisylauncher_intro")
+
         @JvmField val MIO_LIB_PATCHER = File(LAUNCHER_COMPONENTS, "MioLibPatcher.jar")
         /**
          * [Github](https://github.com/bangbang93/forge-install-bootstrapper)

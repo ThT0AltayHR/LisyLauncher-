@@ -21,15 +21,12 @@ package com.movtery.zalithlauncher.ui.screens.main
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,9 +43,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -71,10 +65,10 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
@@ -89,6 +83,7 @@ import com.movtery.zalithlauncher.ui.AndroidStringText
 import com.movtery.zalithlauncher.ui.androidText
 import com.movtery.zalithlauncher.ui.components.BackgroundCard
 import com.movtery.zalithlauncher.ui.components.CardTitleLayout
+import com.movtery.zalithlauncher.ui.components.TextRailItem
 import com.movtery.zalithlauncher.ui.screens.BackStackNavKey
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
@@ -166,27 +161,27 @@ fun MainScreen(
         backgroundColor().copy(alpha = launcherBackgroundOpacity)
     } else backgroundColor()
 
-    val sidebarColor = if (isBackgroundValid) {
-        MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = launcherBackgroundOpacity)
-    } else {
-        MaterialTheme.colorScheme.surfaceContainerLow
-    }
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = backgroundColor,
         contentColor = onBackgroundColor()
     ) {
-        Row(
-            modifier = Modifier.fillMaxSize()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            SideNavigation(
+            TopBar(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .width(88.dp),
-                containerColor = sidebarColor,
+                    .fillMaxWidth()
+                    .height(40.dp),
                 mainScreenKey = mainScreenKey,
                 inLauncherScreen = inLauncherScreen,
+                taskRunning = tasks.isEmpty(),
+                isTasksExpanded = isTaskMenuExpanded,
+                contentColor = onBackgroundColor(),
+                onScreenBack = {
+                    screenBackStackModel.mainScreen.backStack.removeFirstOrNull()
+                },
                 toMainScreen = toMainScreen,
                 toSettingsScreen = {
                     screenBackStackModel.mainScreen.removeAndNavigateTo(
@@ -202,270 +197,153 @@ fun MainScreen(
                         removes = screenBackStackModel.clearBeforeNavKeys,
                         screenKey = NormalNavKey.Multiplayer
                     )
-                }
-            )
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-            ) {
-                ContentHeader(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(44.dp),
-                    mainScreenKey = mainScreenKey,
-                    inLauncherScreen = inLauncherScreen,
-                    hasTasks = tasks.isNotEmpty(),
-                    isTasksExpanded = isTaskMenuExpanded,
-                    contentColor = onBackgroundColor(),
-                    onScreenBack = {
-                        screenBackStackModel.mainScreen.backStack.removeFirstOrNull()
-                    },
-                    openFileManager = {
-                        eventViewModel.sendEvent(
-                            EventViewModel.Event.OpenFileManager(
-                                rootPath = PathManager.DIR_FILES_EXTERNAL.absolutePath
-                            )
-                        )
-                    },
-                    changeExpandedState = {
-                        changeTasksExpandedState()
-                    },
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
-                    NavigationUI(
-                        modifier = Modifier.fillMaxSize(),
-                        screenBackStackModel = screenBackStackModel,
-                        toMainScreen = toMainScreen,
-                        eventViewModel = eventViewModel,
-                        modpackImportViewModel = modpackImportViewModel,
-                        submitError = submitError
+                },
+                toServerListScreen = {
+                    screenBackStackModel.mainScreen.removeAndNavigateTo(
+                        removes = screenBackStackModel.clearBeforeNavKeys,
+                        screenKey = NormalNavKey.ServerList
                     )
+                },
+                toSkinWardrobeScreen = {
+                    screenBackStackModel.mainScreen.removeAndNavigateTo(
+                        removes = screenBackStackModel.clearBeforeNavKeys,
+                        screenKey = NormalNavKey.SkinWardrobe
+                    )
+                },
+                openFileManager = {
+                    eventViewModel.sendEvent(
+                        EventViewModel.Event.OpenFileManager(
+                            rootPath = PathManager.DIR_FILES_EXTERNAL.absolutePath
+                        )
+                    )
+                },
+                changeExpandedState = {
+                    changeTasksExpandedState()
+                },
+            )
 
-                    TaskMenu(
-                        tasks = tasks,
-                        isExpanded = isTaskMenuExpanded,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(0.34f)
-                            .align(Alignment.CenterStart)
-                            .padding(all = 6.dp)
-                    ) {
-                        changeTasksExpandedState()
-                    }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                NavigationUI(
+                    modifier = Modifier.fillMaxSize(),
+                    screenBackStackModel = screenBackStackModel,
+                    toMainScreen = toMainScreen,
+                    eventViewModel = eventViewModel,
+                    modpackImportViewModel = modpackImportViewModel,
+                    submitError = submitError
+                )
+
+                TaskMenu(
+                    tasks = tasks,
+                    isExpanded = isTaskMenuExpanded,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(0.3f)
+                        .align(Alignment.CenterStart)
+                        .padding(all = 6.dp)
+                ) {
+                    changeTasksExpandedState()
                 }
             }
         }
     }
 }
 
-/**
- * 左侧主导航栏：品牌标志 + 主要页面入口
- */
 @Composable
-private fun <E: TitledNavKey> SideNavigation(
+private fun <E: TitledNavKey> TopBar(
     mainScreenKey: E?,
     inLauncherScreen: Boolean,
-    containerColor: Color,
-    modifier: Modifier = Modifier,
-    toMainScreen: () -> Unit,
-    toSettingsScreen: () -> Unit,
-    toDownloadScreen: () -> Unit,
-    toMultiplayerScreen: () -> Unit,
-) {
-    val inMultiplayerScreen = mainScreenKey is NormalNavKey.Multiplayer
-    val inDownloadScreen = mainScreenKey is NestedNavKey.Download
-    val inSettingsScreen = mainScreenKey is NestedNavKey.Settings
-
-    Row(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-                .background(containerColor)
-                .padding(horizontal = 8.dp, vertical = 10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                modifier = Modifier.size(38.dp),
-                painter = painterResource(R.drawable.ic_lisy_mark),
-                contentDescription = null
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                SideNavItem(
-                    selected = inLauncherScreen,
-                    icon = painterResource(
-                        if (inLauncherScreen) R.drawable.ic_home_filled else R.drawable.ic_home_outlined
-                    ),
-                    label = stringResource(R.string.generic_main_menu),
-                    onClick = {
-                        if (!inLauncherScreen) toMainScreen()
-                    }
-                )
-
-                SideNavItem(
-                    selected = inMultiplayerScreen,
-                    icon = painterResource(
-                        if (inMultiplayerScreen) R.drawable.ic_group_filled else R.drawable.ic_group_outlined
-                    ),
-                    label = stringResource(R.string.terracotta),
-                    onClick = {
-                        if (!inMultiplayerScreen) toMultiplayerScreen()
-                    }
-                )
-
-                SideNavItem(
-                    selected = inDownloadScreen,
-                    icon = painterResource(
-                        if (inDownloadScreen) R.drawable.ic_download_2_filled else R.drawable.ic_download_2_outlined
-                    ),
-                    label = stringResource(R.string.generic_download),
-                    onClick = {
-                        if (!inDownloadScreen) toDownloadScreen()
-                    }
-                )
-
-                SideNavItem(
-                    selected = inSettingsScreen,
-                    icon = painterResource(
-                        if (inSettingsScreen) R.drawable.ic_settings_filled else R.drawable.ic_gear_outlined
-                    ),
-                    label = stringResource(R.string.generic_setting),
-                    onClick = {
-                        if (!inSettingsScreen) toSettingsScreen()
-                    }
-                )
-            }
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(1.dp)
-                .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
-        )
-    }
-}
-
-@Composable
-private fun SideNavItem(
-    selected: Boolean,
-    icon: Painter,
-    label: String,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
-) {
-    val containerColor by animateColorAsState(
-        targetValue = if (selected) {
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.16f)
-        } else {
-            Color.Transparent
-        },
-        label = "SideNavItemContainer"
-    )
-    val contentColor by animateColorAsState(
-        targetValue = if (selected) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
-        },
-        label = "SideNavItemContent"
-    )
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .background(containerColor)
-            .clickable(role = Role.Tab, onClick = onClick)
-            .padding(vertical = 8.dp, horizontal = 2.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(3.dp)
-    ) {
-        Icon(
-            modifier = Modifier.size(22.dp),
-            painter = icon,
-            contentDescription = null,
-            tint = contentColor
-        )
-        Text(
-            text = label,
-            color = contentColor,
-            style = MaterialTheme.typography.labelSmall,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-/**
- * 内容区顶部的标题栏：返回按钮、当前页面标题、任务提示与文件管理器入口
- */
-@Composable
-private fun <E: TitledNavKey> ContentHeader(
-    mainScreenKey: E?,
-    inLauncherScreen: Boolean,
-    hasTasks: Boolean,
+    taskRunning: Boolean,
     isTasksExpanded: Boolean,
     modifier: Modifier = Modifier,
     contentColor: Color,
     onScreenBack: () -> Unit,
+    toMainScreen: () -> Unit,
+    toSettingsScreen: () -> Unit,
+    toDownloadScreen: () -> Unit,
+    toMultiplayerScreen: () -> Unit,
     openFileManager: () -> Unit,
     changeExpandedState: () -> Unit,
+    toServerListScreen: () -> Unit = {},
+    toSkinWardrobeScreen: () -> Unit = {},
 ) {
     val festivals = LocalFestivals.current
+
+    val inMultiplayerScreen = mainScreenKey is NormalNavKey.Multiplayer
+    val inDownloadScreen = mainScreenKey is NestedNavKey.Download
+    val inSettingsScreen = mainScreenKey is NestedNavKey.Settings
+    val inServerListScreen = mainScreenKey is NormalNavKey.ServerList
+    val inSkinWardrobeScreen = mainScreenKey is NormalNavKey.SkinWardrobe
 
     CompositionLocalProvider(
         LocalContentColor provides contentColor
     ) {
-        Row(
-            modifier = modifier.padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        ConstraintLayout(modifier = modifier) {
+            val (backCenter, title, endButtons) = createRefs()
+
             val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
-            AnimatedVisibility(
-                visible = !inLauncherScreen
+            Row(
+                modifier = Modifier
+                    .constrainAs(backCenter) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .fillMaxHeight()
             ) {
-                IconButton(
-                    onClick = {
-                        if (!inLauncherScreen) {
-                            //不在主屏幕时才允许返回
-                            backDispatcher?.onBackPressed() ?: run {
-                                onScreenBack()
+                AnimatedVisibility(
+                    visible = !inLauncherScreen
+                ) {
+                    Row(modifier = Modifier.fillMaxHeight()) {
+                        Spacer(Modifier.width(12.dp))
+
+                        IconButton(
+                            modifier = Modifier.fillMaxHeight(),
+                            onClick = {
+                                if (!inLauncherScreen) {
+                                    //不在主屏幕时才允许返回
+                                    backDispatcher?.onBackPressed() ?: run {
+                                        onScreenBack()
+                                    }
+                                }
                             }
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(24.dp),
+                                painter = painterResource(R.drawable.ic_arrow_back),
+                                contentDescription = stringResource(R.string.generic_back)
+                            )
+                        }
+
+                        IconButton(
+                            modifier = Modifier.fillMaxHeight(),
+                            onClick = {
+                                if (!inLauncherScreen) {
+                                    //不在主屏幕时才允许回到主页面
+                                    toMainScreen()
+                                }
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_home_filled),
+                                contentDescription = stringResource(R.string.generic_main_menu)
+                            )
                         }
                     }
-                ) {
-                    Icon(
-                        modifier = Modifier.size(22.dp),
-                        painter = painterResource(R.drawable.ic_arrow_back),
-                        contentDescription = stringResource(R.string.generic_back)
-                    )
                 }
             }
-
             val parentRes = mainScreenKey?.title
             val childRes = (mainScreenKey as? BackStackNavKey<*>)?.currentKey?.title
 
             Crossfade(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp),
+                modifier = Modifier.constrainAs(title) {
+                    centerVerticallyTo(parent)
+                    start.linkTo(backCenter.end, margin = 16.dp)
+                },
                 targetState = parentRes to childRes
             ) { (parent, child) ->
                 val style = MaterialTheme.typography.titleMedium
@@ -503,43 +381,134 @@ private fun <E: TitledNavKey> ContentHeader(
                 }
             }
 
-            AnimatedVisibility(
-                visible = hasTasks && !isTasksExpanded,
-                enter = slideInVertically(
-                    initialOffsetY = { -50 }
-                ) + fadeIn(),
-                exit = slideOutVertically(
-                    targetOffsetY = { -50 }
-                ) + fadeOut()
+            Row(
+                modifier = Modifier
+                    .constrainAs(endButtons) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        end.linkTo(parent.end, margin = 12.dp)
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Row(
-                    modifier = Modifier
-                        .clip(shape = MaterialTheme.shapes.large)
-                        .clickable { changeExpandedState() }
-                        .padding(all = 8.dp)
-                        .width(120.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                AnimatedVisibility(
+                    visible = !(isTasksExpanded || taskRunning),
+                    enter = slideInVertically(
+                        initialOffsetY = { -50 }
+                    ) + fadeIn(),
+                    exit = slideOutVertically(
+                        targetOffsetY = { -50 }
+                    ) + fadeOut()
                 ) {
-                    LinearProgressIndicator(modifier = Modifier.weight(1f))
+                    Row(
+                        modifier = Modifier
+                            .clip(shape = MaterialTheme.shapes.large)
+                            .clickable { changeExpandedState() }
+                            .padding(all = 8.dp)
+                            .width(120.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        LinearProgressIndicator(modifier = Modifier.weight(1f))
+                        Icon(
+                            modifier = Modifier.size(22.dp),
+                            painter = painterResource(R.drawable.ic_assignment_filled),
+                            contentDescription = stringResource(R.string.main_task_menu)
+                        )
+                    }
+                }
+
+                IconButton(
+                    onClick = openFileManager
+                ) {
                     Icon(
-                        modifier = Modifier.size(22.dp),
-                        painter = painterResource(R.drawable.ic_assignment_filled),
-                        contentDescription = stringResource(R.string.main_task_menu)
+                        painter = painterResource(R.drawable.ic_folder_filled),
+                        contentDescription = null
                     )
                 }
-            }
 
-            IconButton(
-                onClick = openFileManager
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_folder_outlined),
-                    contentDescription = null
+                TopBarRailItem(
+                    selected = inMultiplayerScreen,
+                    painter = painterResource(R.drawable.ic_group_filled),
+                    text = stringResource(R.string.terracotta),
+                    onClick = {
+                        if (!inMultiplayerScreen) toMultiplayerScreen()
+                    },
+                )
+
+                TopBarRailItem(
+                    selected = inServerListScreen,
+                    painter = painterResource(R.drawable.ic_dns_filled),
+                    text = stringResource(R.string.serverlist_title),
+                    onClick = {
+                        if (!inServerListScreen) toServerListScreen()
+                    },
+                )
+
+                TopBarRailItem(
+                    selected = inSkinWardrobeScreen,
+                    painter = painterResource(R.drawable.ic_person_filled),
+                    text = stringResource(R.string.wardrobe_title),
+                    onClick = {
+                        if (!inSkinWardrobeScreen) toSkinWardrobeScreen()
+                    },
+                )
+
+                TopBarRailItem(
+                    selected = inDownloadScreen,
+                    painter = painterResource(R.drawable.ic_download_2_filled),
+                    text = stringResource(R.string.generic_download),
+                    onClick = {
+                        if (!inDownloadScreen) toDownloadScreen()
+                    },
+                )
+
+                TopBarRailItem(
+                    selected = inSettingsScreen,
+                    painter = painterResource(R.drawable.ic_settings_filled),
+                    text = stringResource(R.string.generic_setting),
+                    onClick = {
+                        if (!inSettingsScreen) toSettingsScreen()
+                    },
                 )
             }
         }
     }
+}
+
+@Composable
+private fun TopBarRailItem(
+    selected: Boolean,
+    painter: Painter,
+    text: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    textStyle: TextStyle = MaterialTheme.typography.labelMedium
+) {
+    TextRailItem(
+        modifier = modifier,
+        onClick = onClick,
+        text = {
+            AnimatedVisibility(visible = selected) {
+                Row {
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = text,
+                        style = textStyle
+                    )
+                }
+            }
+        },
+        icon = {
+            Icon(
+                painter = painter,
+                contentDescription = text
+            )
+        },
+        selected = selected,
+        selectedPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+        unSelectedPadding = PaddingValues(all = 8.dp),
+    )
 }
 
 @Composable
@@ -708,6 +677,12 @@ private fun NavigationUI(
                         key = key,
                         backStackViewModel = screenBackStackModel,
                     )
+                }
+                entry<NormalNavKey.ServerList> {
+                    com.movtery.zalithlauncher.ui.screens.content.serverlist.ServerListScreen()
+                }
+                entry<NormalNavKey.SkinWardrobe> {
+                    com.movtery.zalithlauncher.ui.screens.content.SkinWardrobeScreen()
                 }
             }
         )

@@ -102,6 +102,8 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.context.COPY_LABEL_SERVER_IP
+import com.movtery.zalithlauncher.context.GlobalContext
+import com.movtery.zalithlauncher.context.copyAssetFile
 import com.movtery.zalithlauncher.game.version.installed.Version
 import com.movtery.zalithlauncher.game.version.multiplayer.AllServers
 import com.movtery.zalithlauncher.game.version.multiplayer.ServerData
@@ -221,6 +223,15 @@ private class ServerListViewModel(
             job.cancel()
         }
         allLoadingServer.clear()
+
+        //新版本实例首次打开服务器列表时，预置默认服务器列表（仅当尚无 servers.dat 时）
+        if (!serverData.exists()) {
+            runCatching {
+                GlobalContext.copyAssetFile("game/default_servers.dat", serverData, false)
+            }.onFailure {
+                Logger.warning("ServerListScreen", "Failed to copy default servers.dat", it)
+            }
+        }
 
         allServers.loadServers(serverData)
 
