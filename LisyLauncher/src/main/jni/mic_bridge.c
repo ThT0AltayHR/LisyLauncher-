@@ -16,6 +16,7 @@
 #include <string.h>
 #include <android/log.h>
 #include <aaudio/AAudio.h>
+#include <dlfcn.h>
 
 #define TAG "MicBridge"
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__)
@@ -32,6 +33,25 @@ typedef struct {
 // Tek bir okuma denemesindeki blocking timeout (nanosaniye).
 // Küçük tutulur ki nativeStop çağrısı çok gecikmeden okuma döngüsünden çıkabilsin.
 #define READ_TIMEOUT_NANOS (200LL * 1000000LL) // 200ms
+
+/*
+ * AAudioStreamBuilder_setInputPreset is annotated as API 28 in the NDK
+ * headers. Resolve it dynamically on API 26/27 so the microphone bridge
+ * remains compatible with the app's minSdk instead of failing native
+ * compilation or loading an unavailable symbol on older devices.
+ */
+static void setVoiceCommunicationPreset(AAudioStreamBuilder *builder) {
+#if __ANDROID_API__ >= 28
+    AAudioStreamBuilder_setInputPreset(builder, AAUDIO_INPUT_PRESET_VOICE_COMMUNICATION);
+#else
+    typedef void (*SetInputPresetFn)(AAudioStreamBuilder *, aaudio_input_preset_t);
+    SetInputPresetFn setInputPreset =
+            (SetInputPresetFn) dlsym(RTLD_DEFAULT, "AAudioStreamBuilder_setInputPreset");
+    if (setInputPreset != NULL) {
+        setInputPreset(builder, AAUDIO_INPUT_PRESET_VOICE_COMMUNICATION);
+    }
+#endif
+}
 
 JNIEXPORT jlong JNICALL
 Java_com_movtery_zalithlauncher_micbridge_NativeMic_nativeOpenStream(
@@ -53,7 +73,7 @@ Java_com_movtery_zalithlauncher_micbridge_NativeMic_nativeOpenStream(
     AAudioStreamBuilder_setSharingMode(builder, AAUDIO_SHARING_MODE_SHARED);
     AAudioStreamBuilder_setPerformanceMode(builder, AAUDIO_PERFORMANCE_MODE_LOW_LATENCY);
     // Modlar (ör. sesli sohbet modları) genelde konuşma amaçlı yakalama ister.
-    AAudioStreamBuilder_setInputPreset(builder, AAUDIO_INPUT_PRESET_VOICE_COMMUNICATION);
+    setVoiceCommunicationPreset(builder);
 
     AAudioStream *stream = NULL;
     result = AAudioStreamBuilder_openStream(builder, &stream);
